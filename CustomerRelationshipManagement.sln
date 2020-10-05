@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.29519.87
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomerRelationshipManagement", "CustomerRelationshipManagement\CustomerRelationshipManagement.csproj", "{A4777687-4220-43A2-BBF0-38275D56A060}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyCRM", "TinyCRM\TinyCRM.csproj", "{01FD6C88-5A20-49B6-99D9-AC663E4FC3BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TinyCRM", "TinyCRM\TinyCRM.csproj", "{01FD6C88-5A20-49B6-99D9-AC663E4FC3BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TiniCRM2", "TiniCRM2\TiniCRM2.csproj", "{DF708E88-BB41-4795-A835-D9F9B6454B33}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TinyCRM2", "TiniCRM2\TinyCRM2.csproj", "{DF708E88-BB41-4795-A835-D9F9B6454B33}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
