@@ -12,12 +12,13 @@ namespace TiniCRM2
             var ui = new UserInterface();
             var service = new CustomerService();
             var customers = service.getAllCustomers();
+
             // 1. Execute the request user
             while (true)
             {
                 // 1. User chosse an option: Add, Edit, Delete, Exit
                 ui.DisplayMenu();
-                int option = ui.GetIntergerInput("");
+                int option = ui.GetIntergerInput("SELECT AN OPTION: ");
 
                 // 2.Based on the option, execute the operation
                 switch (option)
@@ -29,22 +30,22 @@ namespace TiniCRM2
                     case (int)Choose.Add:
                         Customer newCustomer = ui.CustomerInput();
                         service.AddCustomer(newCustomer);
+                        ui.ShowMessage(message.ADD_SUCCESSFULLY);
                         break;
 
                     case (int)Choose.Edit:
                         EditCustomer(ui, service, message, customers);
-                        ui.ShowMessage(message.EDIT_SUCCESSFULLY);
+                        //ui.ShowMessage(message.EDIT_SUCCESSFULLY);
                         break;
 
                     case (int)Choose.Remove:
-                        service.DeleteCustomer(ui.GetIDFromScreen(customers));
+                        var deleteCustomerID = ui.GetIDFromScreen(customers);
+                        service.DeleteCustomer(deleteCustomerID);
                         ui.ShowMessage(message.DELETE_SUCCESSFULLY);
                         break;
-                    //case (int)Choose.RemoveAll:
-
-                    //    //service.DeleteCustomer(id);
-                    //    Console.WriteLine("Remove");
-                    //    break;
+                    case (int)Choose.Clear:
+                        Console.Clear();
+                        break;
 
                     default:
                         ui.ShowMessage(message.EXIT);
@@ -59,10 +60,15 @@ namespace TiniCRM2
             while (true)
             {
                 var customerID = ui.GetIDFromScreen(customers);
+                //check exits ID in list
                 if (!customers.Exists(item => customerID.Equals(item.ID)))
+                {
+                    ui.ShowMessage(message.NOT_FOUND);
                     return;
+                }
 
                 var customer = customers.First(item => customerID.Equals(item.ID));
+                Console.Clear();
                 ui.DisplayCustomer(customer);
                 while (true)
                 {
@@ -81,46 +87,67 @@ namespace TiniCRM2
                         //Edit contact
                         case 2:
                             //Check list Address
-                            if (customer.Address.Any())
-                            {
-                                ui.DisplayContact(customer);
-                                var idAddress = ui.GetStringInput("SELECT AN OPTION: ");
-                                while (true)
-                                {
-                                    ui.DisplayMenuEditContacts(customer.Address, idAddress);
-                                    var optionContact = ui.GetIntergerInput("SELECT AN OPTION: ");
-                                    switch (optionContact)
-                                    {
-                                        case 1:
-                                            var phone = ui.GetStringInput(message.ENTER_PHONE);
-                                            service.EditPhoneByIDAddress(customer.Address, idAddress, phone);
-                                            ui.DisplayCustomer(customer);
-                                            break;
-                                        case 2:
-                                            var emai = ui.GetStringInput(message.ENTER_EMAIL);
-                                            service.EditEmailByIDAddress(customer.Address, idAddress, emai);
-                                            ui.DisplayCustomer(customer);
-                                            break;
-                                        case 3:
-                                            var location = ui.GetStringInput(message.ENTER_LOCATION);
-                                            service.EditLocationByIDAddress(customer.Address, idAddress, location);
-                                            ui.DisplayCustomer(customer);
-                                            break;
-                                        default:
-                                            return;
-                                    }
-
-                                }
-
-                            }
-                            return;
+                            EditContact(customer, ui, service, message);
+                            break;
+                        case 3:
+                            Console.Clear();
+                            ui.DisplayCustomer(customer);
+                            break;
                         default:
                             return;
+                            
                     }
                 }
-                break;
+
             }
         }
 
+        private static void EditContact(Customer customer, UserInterface ui, CustomerService service, Message message)
+        {
+            if (customer.Address.Any())
+            {
+                ui.DisplayContact(customer);
+                var idAddress = ui.GetStringInput("SELECT AN OPTION: ");
+                while (true)
+                {
+                    ui.DisplayContactByID(customer.Address, idAddress);
+                    ui.DisplayMenuEditContacts(customer.Address, idAddress);
+                    var optionContact = ui.GetIntergerInput("SELECT AN OPTION: ");
+                    switch (optionContact)
+                    {
+                        case 1:
+                            var phone = ui.GetStringInput(message.ENTER_PHONE);
+                            service.EditPhoneByIDAddress(customer.Address, idAddress, phone);
+                            //ui.DisplayCustomer(customer);
+                            //ui.DisplayMenuEditContacts(customer.Address, idAddress);
+                            break;
+
+                        case 2:
+                            var emai = ui.GetStringInput(message.ENTER_EMAIL);
+                            service.EditEmailByIDAddress(customer.Address, idAddress, emai);
+                            //ui.DisplayCustomer(customer);
+                            //ui.DisplayMenuEditContacts(customer.Address, idAddress);
+                            break;
+
+                        case 3:
+                            var location = ui.GetStringInput(message.ENTER_LOCATION);
+                            service.EditLocationByIDAddress(customer.Address, idAddress, location);
+                            //ui.DisplayCustomer(customer);
+                            //ui.DisplayMenuEditContacts(customer.Address, idAddress);
+                            break;
+                        case 4:
+                            Console.Clear();
+                            //ui.DisplayMenuEditContacts(customer.Address, idAddress);
+                            break;
+
+                        default:
+                            ui.DisplayCustomer(customer);
+                            return;
+                    }
+                    
+                }
+
+            }
+        }
     }
 }

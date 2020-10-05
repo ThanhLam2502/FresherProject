@@ -14,6 +14,8 @@ namespace TiniCRM2
         public readonly string CHOOSE_ID = "SELECT THE ID: ";
         public readonly string DELETE_SUCCESSFULLY = "DELETE CUSTOMER SUCCESSFULLY";
         public readonly string EDIT_SUCCESSFULLY = "CHANGE INFORMATION CUSTOMER SUCCESSFULLY";
+        public readonly string ADD_SUCCESSFULLY = "ADD CUSTOMER SUCCESSFULLY";
         public readonly string EXIT = "GOODBYE";
+        public readonly string NOT_FOUND = "NOT FOUND";
     }
 }

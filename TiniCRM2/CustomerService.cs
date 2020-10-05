@@ -20,9 +20,10 @@ namespace TiniCRM2
         internal void AddCustomer(Customer newCustomer)
         {
             var listCustomer = _customerRepository.Customer;
-            var lenList = listCustomer.Count;
+            var maxID = Convert.ToInt32(listCustomer.Max(item => item.ID));
+ 
+            newCustomer.ID = maxID == 0 ?  "1" :  (maxID + 1).ToString();
 
-            newCustomer.ID = lenList == 0 ?  "1" :  (lenList+1).ToString();
             listCustomer.Add(newCustomer);
         }
 

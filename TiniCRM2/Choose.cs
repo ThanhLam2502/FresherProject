@@ -6,6 +6,6 @@
         Add = 2,
         Edit = 3,
         Remove = 4,
-        RemoveAll = 5,
+        Clear = 5,
     }
 }

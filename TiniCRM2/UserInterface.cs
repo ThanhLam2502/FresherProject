@@ -32,16 +32,20 @@ namespace TiniCRM2
             Console.WriteLine("2. ADD A CUSTOMER");
             Console.WriteLine("3. EDIT A CUSTOMER");
             Console.WriteLine("4. DELETE A CUSTOMER");
-            Console.WriteLine("5. PRESS ANOTHER KEY TO EXIT");
-            Console.Write("SELECT AN OPTION: ");
+            Console.WriteLine("5. CLEAR SCREEN");
+            Console.WriteLine("6. PRESS ANOTHER KEY TO EXIT");
         }
 
         internal void ShowAllCustomer(List<Customer> customers)
         {
             Console.WriteLine();
+            //1. if: List empty, show message EMPTY
             if (customers.Count == 0)
                 ShowMessage(_message.EMPTY_CUSTOMER);
+
+            //2. else: Show all list Customer
             else customers.ForEach(item => DisplayCustomer(item));
+
             Console.WriteLine();
         }
 
@@ -53,7 +57,8 @@ namespace TiniCRM2
                 Console.WriteLine("1. FULL NAME");
             if (customer.Address.Any())
                 Console.WriteLine("2. ADDRESS");
-            Console.WriteLine("3. PRESS ANOTHER KEY TO EXIT");
+            Console.WriteLine("3. CLEAR");
+            Console.WriteLine("4. PRESS ANOTHER KEY TO EXIT");
         }
 
         internal string GetIDFromScreen(List<Customer> customers)
@@ -129,21 +134,38 @@ namespace TiniCRM2
             }
         }
 
+        internal void DisplayContactByID(List<Address> address, string idAddress)
+        {
+            var _address = address.First(item => idAddress.Equals(item.ID));
+            StringBuilder displayAddess = new StringBuilder();
+
+            displayAddess.Append(string.Format("\tADDRESS ID: {0}", _address.ID));
+
+            if (!string.IsNullOrEmpty(_address.Phone))
+                displayAddess.Append(string.Format("\tPHONE: {0}", _address.Phone));
+            if (!string.IsNullOrEmpty(_address.Email))
+                displayAddess.Append(string.Format("\tEMAIL: {0}", _address.Email));
+            if (!string.IsNullOrEmpty(_address.Location))
+                displayAddess.Append(string.Format("\tLOCATION: {0}", _address.Location));
+
+            Console.WriteLine(displayAddess);
+        }
+
         internal void DisplayMenuEditContacts(List<Address> address, string idAddress)
         {
             Console.WriteLine();
-            Console.WriteLine("----------------------------");
+            Console.WriteLine("---------------------------");
 
             var _address = address.First(item => idAddress.Equals(item.ID));
             if (!string.IsNullOrEmpty(_address.Phone))
                 Console.WriteLine("1. PHONE");
             if (!string.IsNullOrEmpty(_address.Email))
-                Console.WriteLine("2. Email");
+                Console.WriteLine("2. EMAIL");
             if (!string.IsNullOrEmpty(_address.Location))
                 Console.WriteLine("3. LOCATION");
 
-
-            Console.WriteLine("4. PRESS ANOTHER KEY TO EXIT");
+            Console.WriteLine("4. CLEAR SCREEN");
+            Console.WriteLine("5. PRESS ANOTHER KEY TO EXIT");
         }
 
         internal void DisplayMenuAddress()
