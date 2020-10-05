@@ -129,23 +129,21 @@ namespace TiniCRM2
             }
         }
 
-        internal void DisplayMenuEditContacts(List<Address> address)
+        internal void DisplayMenuEditContacts(List<Address> address, string idAddress)
         {
             Console.WriteLine();
             Console.WriteLine("----------------------------");
 
-            address.ForEach(item =>
-            {
-                if(!string.IsNullOrEmpty(item.Phone))
-                    Console.WriteLine("1. PHONE");
-                if (!string.IsNullOrEmpty(item.Email))
-                    Console.WriteLine("2. Email");
-                if (!string.IsNullOrEmpty(item.Location))
-                    Console.WriteLine("3. LOCATION");
+            var _address = address.First(item => idAddress.Equals(item.ID));
+            if (!string.IsNullOrEmpty(_address.Phone))
+                Console.WriteLine("1. PHONE");
+            if (!string.IsNullOrEmpty(_address.Email))
+                Console.WriteLine("2. Email");
+            if (!string.IsNullOrEmpty(_address.Location))
+                Console.WriteLine("3. LOCATION");
 
-            });
-            
-            Console.WriteLine("2. PRESS ANOTHER KEY TO EXIT");
+
+            Console.WriteLine("4. PRESS ANOTHER KEY TO EXIT");
         }
 
         internal void DisplayMenuAddress()

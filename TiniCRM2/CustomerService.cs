@@ -43,17 +43,17 @@ namespace TiniCRM2
             customer.FullName = fullName;
         }
 
-        internal void EditPhoneByIDAddress(List<Address> address, int idAddress, string phone)
+        internal void EditPhoneByIDAddress(List<Address> address, string idAddress, string phone)
         {
             address.First(item => item.ID.Equals(idAddress)).Phone = phone;
         }
 
-        internal void EditEmailByIDAddress(List<Address> address, int idAddress, string emai)
+        internal void EditEmailByIDAddress(List<Address> address, string idAddress, string emai)
         {
             address.First(item => item.ID.Equals(idAddress)).Email = emai;
         }
 
-        internal void EditLocationByIDAddress(List<Address> address, int idAddress, string location)
+        internal void EditLocationByIDAddress(List<Address> address, string idAddress, string location)
         {
             address.First(item => item.ID.Equals(idAddress)).Location = location;
         }

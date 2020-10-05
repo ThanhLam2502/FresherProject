@@ -84,33 +84,33 @@ namespace TiniCRM2
                             if (customer.Address.Any())
                             {
                                 ui.DisplayContact(customer);
-                                var idAddress = ui.GetIntergerInput("SELECT AN OPTION: ");
-                                //while (true)
-                                //{
-                                //    ui.DisplayMenuEditContacts(customer.Address);
-                                //    var optionContact = ui.GetIntergerInput("SELECT AN OPTION: ");
-                                //    switch (optionContact)
-                                //    {
-                                //        case 1: 
-                                //            var phone = ui.GetStringInput(message.ENTER_PHONE);
-                                //            service.EditPhoneByIDAddress(customer.Address, idAddress, phone);
-                                //            ui.DisplayCustomer(customer);
-                                //            break;
-                                //        case 2:
-                                //            var emai = ui.GetStringInput(message.ENTER_EMAIL);
-                                //            service.EditEmailByIDAddress(customer.Address, idAddress, emai);
-                                //            ui.DisplayCustomer(customer);
-                                //            break;
-                                //        case 3:
-                                //            var location = ui.GetStringInput(message.ENTER_LOCATION);
-                                //            service.EditLocationByIDAddress(customer.Address, idAddress, location);
-                                //            ui.DisplayCustomer(customer);
-                                //            break;
-                                //        default:
-                                //            return;
-                                //    }
+                                var idAddress = ui.GetStringInput("SELECT AN OPTION: ");
+                                while (true)
+                                {
+                                    ui.DisplayMenuEditContacts(customer.Address, idAddress);
+                                    var optionContact = ui.GetIntergerInput("SELECT AN OPTION: ");
+                                    switch (optionContact)
+                                    {
+                                        case 1:
+                                            var phone = ui.GetStringInput(message.ENTER_PHONE);
+                                            service.EditPhoneByIDAddress(customer.Address, idAddress, phone);
+                                            ui.DisplayCustomer(customer);
+                                            break;
+                                        case 2:
+                                            var emai = ui.GetStringInput(message.ENTER_EMAIL);
+                                            service.EditEmailByIDAddress(customer.Address, idAddress, emai);
+                                            ui.DisplayCustomer(customer);
+                                            break;
+                                        case 3:
+                                            var location = ui.GetStringInput(message.ENTER_LOCATION);
+                                            service.EditLocationByIDAddress(customer.Address, idAddress, location);
+                                            ui.DisplayCustomer(customer);
+                                            break;
+                                        default:
+                                            return;
+                                    }
 
-                                //}
+                                }
 
                             }
                             return;
