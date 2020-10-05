@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29519.87
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomerRelationshipManagement", "CustomerRelationshipManagement\CustomerRelationshipManagement.csproj", "{A4777687-4220-43A2-BBF0-38275D56A060}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyCRM", "TinyCRM\TinyCRM.csproj", "{01FD6C88-5A20-49B6-99D9-AC663E4FC3BC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TiniCRM2", "TiniCRM2\TiniCRM2.csproj", "{DF708E88-BB41-4795-A835-D9F9B6454B33}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A4777687-4220-43A2-BBF0-38275D56A060}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4777687-4220-43A2-BBF0-38275D56A060}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4777687-4220-43A2-BBF0-38275D56A060}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4777687-4220-43A2-BBF0-38275D56A060}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01FD6C88-5A20-49B6-99D9-AC663E4FC3BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01FD6C88-5A20-49B6-99D9-AC663E4FC3BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01FD6C88-5A20-49B6-99D9-AC663E4FC3BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01FD6C88-5A20-49B6-99D9-AC663E4FC3BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF708E88-BB41-4795-A835-D9F9B6454B33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF708E88-BB41-4795-A835-D9F9B6454B33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF708E88-BB41-4795-A835-D9F9B6454B33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF708E88-BB41-4795-A835-D9F9B6454B33}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E43619D2-7F42-4E7E-AE0D-D3E76FF78CCF}
+	EndGlobalSection
+EndGlobal
