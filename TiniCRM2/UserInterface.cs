@@ -72,8 +72,6 @@ namespace TiniCRM2
 
         internal void ShowAllCustomer(List<Customer> customers)
         {
-            Console.WriteLine();
-
             if (customers.Count == 0)
                 ShowMessage(Message.EMPTY_CUSTOMER);
             else customers.ForEach(item => ShowCustomer(item));
@@ -132,7 +130,6 @@ namespace TiniCRM2
 
         internal void ShowAllContact(List<Address> addresses)
         {
-            Console.WriteLine();
             addresses.ForEach(x =>
             {
                 StringBuilder displayAddess = new StringBuilder();
@@ -148,6 +145,13 @@ namespace TiniCRM2
 
                 Console.WriteLine(displayAddess);
             });
+            Console.WriteLine();
+        }
+
+        internal string GetIDFromUI()
+        {
+            var input = GetOptionInput();
+            return input.ToString();
         }
 
         public List<Address> EnterListAddress()
@@ -211,15 +215,17 @@ namespace TiniCRM2
             return input;
         }
 
-        //internal string ValidStringInput(string message, string regex)
-        //{
-        //    string input = "";
-        //    do{
-        //        input = GetStringInput(message);
-        //    } while (string.IsNullOrEmpty(input) || !_validate.IsValid(input, regex));
+        internal string ValidStringInput(string message, string regex)
+        {
+            string input = "";
+            do
+            {
+                Console.Write(message);
+                input = Console.ReadLine();
+            } while (string.IsNullOrEmpty(input) || !_validate.IsValid(input, regex));
 
-        //    return input;
-        //}
+            return input;
+        }
 
         internal void DisplayContactByID(List<Address> address, string idAddress)
         {
@@ -238,27 +244,27 @@ namespace TiniCRM2
             Console.WriteLine(displayAddess);
         }
 
-        internal void DisplayMenuEditContacts(List<Address> address, string idAddress)
+        internal void DisplayMenuEditContact(Address address)
         {
             Console.WriteLine();
             Console.WriteLine("---------------------------");
 
-            var _address = address.First(item => idAddress.Equals(item.ID));
-            if (!string.IsNullOrEmpty(_address.Phone))
+            if (!string.IsNullOrEmpty(address.Phone))
                 Console.WriteLine("1. PHONE");
-            if (!string.IsNullOrEmpty(_address.Email))
+            if (!string.IsNullOrEmpty(address.Email))
                 Console.WriteLine("2. EMAIL");
-            if (!string.IsNullOrEmpty(_address.Location))
+            if (!string.IsNullOrEmpty(address.Location))
                 Console.WriteLine("3. LOCATION");
 
             Console.WriteLine("4. CLEAR SCREEN");
-            Console.WriteLine("5. PRESS ANOTHER KEY NUMBER TO EXIT");
+            Console.WriteLine("5. EXIT");
         }
 
         internal void DisplayMenuAddress()
         {
             Console.WriteLine();
             Console.WriteLine("----------------------------");
+
             Console.WriteLine("1. ADD A ADDRESS");
             Console.WriteLine("2. CLEAR");
             Console.WriteLine("3. EXIT");

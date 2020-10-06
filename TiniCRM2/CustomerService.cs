@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace TiniCRM2
 {
@@ -21,8 +22,8 @@ namespace TiniCRM2
         {
             var listCustomer = _customerRepository.Customer;
             int maxID = int.Parse(listCustomer.Max(item => item.ID));
- 
-            newCustomer.ID = maxID == 0 ?  "1" :  (maxID + 1).ToString();
+
+            newCustomer.ID = maxID == 0 ? "1" : (maxID + 1).ToString();
 
             listCustomer.Add(newCustomer);
         }
@@ -35,28 +36,24 @@ namespace TiniCRM2
         {
             _customerRepository.Customer = new List<Customer>();
         }
-        internal void EditCustomer(string id)
-        {
-            
-        }
         internal void EditFullNameCustomer(Customer customer, string fullName)
         {
             customer.FullName = fullName;
         }
 
-        internal void EditPhoneByIDAddress(List<Address> address, string idAddress, string phone)
+        internal void EditPhoneByIDAddress(Address address, string phone)
         {
-            address.First(item => item.ID.Equals(idAddress)).Phone = phone;
+            address.Phone = phone;
         }
 
-        internal void EditEmailByIDAddress(List<Address> address, string idAddress, string emai)
+        internal void EditEmailByIDAddress(Address address, string emai)
         {
-            address.First(item => item.ID.Equals(idAddress)).Email = emai;
+            address.Email = emai;
         }
 
-        internal void EditLocationByIDAddress(List<Address> address, string idAddress, string location)
+        internal void EditLocationByIDAddress(Address address, string location)
         {
-            address.First(item => item.ID.Equals(idAddress)).Location = location;
+            address.Location = location;
         }
 
         internal bool IsExistsCustomerID(string customerId)
@@ -69,9 +66,29 @@ namespace TiniCRM2
             return _customerRepository.Customer.First(item => customerId.Equals(item.ID));
         }
 
-        internal bool isExistsAddress(List<Address> address)
+        internal bool IsExistsAddress(List<Address> address)
         {
             return address.Any();
+        }
+
+        internal Address GetAddressByID(List<Address> address, string addressID)
+        {
+            return address.First(item => addressID.Equals(item.ID));
+        }
+
+        internal bool IsExistsAddressByID(List<Address> address, string addressID)
+        {
+            return address.Exists(item => addressID.Equals(item.ID));
+        }
+
+        internal bool IsPhoneExistsAddress(Address address)
+        {
+            return string.IsNullOrEmpty(address.Phone);
+        }
+
+        internal bool IsMailExistsAddress(Address address)
+        {
+            return string.IsNullOrEmpty(address.Email);
         }
     }
 }

@@ -77,41 +77,114 @@ namespace TiniCRM2
                         {
                             // 5.1. User choose Full Name
                             case 1:
-                                // 5.1.1 Get Input Full Name
+                                // 5.1.1. Get fullName user input 
                                 string fullName = ui.GetStringInput(Message.ENTER_FULLNAME, Validate.regexName);
-                                // 5.1.2 Save edit
+
+                                // 5.1.2. Save edit
                                 service.EditFullNameCustomer(customer, fullName);
+
+                                // 5.1.3. Show info edit successfully
+                                ui.ShowMessage(Message.EDIT_SUCCESSFULLY);
                                 break;
 
                             // 5.2. User choose Address
                             case 2:
                                 // 5.2.1. Check exist list Address
-                                bool isAddress = service.isExistsAddress(customer.Address);
-                                if (!isAddress)
+                                bool isListAddress = service.IsExistsAddress(customer.Address);
+                                if (!isListAddress)
                                     break;
-                                // 5.2.2 Show contact customer
+
+                                // 5.2.2. Show contact customer
                                 ui.ShowAllContact(customer.Address);
 
+                                // 5.2.3. Loop for when get addressID
+                                string addressID = string.Empty;
+                                while (true)
+                                {
+                                    // 5.2.3.1 Get AddressID From UI
+                                    addressID = ui.GetIDFromUI();
+                                    // 5.2.3.2 Check exists AddressID
+                                    bool isAddress = service.IsExistsAddressByID(customer.Address, addressID);
+
+                                    if (isAddress)
+                                        break;
+                                }
+
+                                // 5.2.4. Get Address By ID
+                                Address address = service.GetAddressByID(customer.Address, addressID);
+
                                 // 5.2.2. Show menu edit contact
+                                ui.DisplayMenuEditContact(address);
 
                                 // 3.4.2. User choose an option
-
+                                int optionEditAdress = ui.GetOptionInput();
                                 // 3.4.3. Edit Addreess by option
+                                switch (optionEditAdress)
+                                {
+                                    case 1:
+                                        // 1. check exist property phone in address
+                                        bool isPhone = service.IsPhoneExistsAddress(address);
+                                        if (isPhone)
+                                            break;
 
+                                        // 2. get Phone user input
+                                        var phone = ui.ValidStringInput(Message.ENTER_PHONE, Validate.regexPhone);
+
+                                        // 3. save the phone
+                                        service.EditPhoneByIDAddress(address, phone);
+
+                                        // 4. Show info edit successfully
+                                        ui.ShowMessage(Message.EDIT_SUCCESSFULLY);
+                                        break;
+
+                                    //edit Email
+                                    case 2:
+                                        // 1. check exist property email in address
+                                        bool isMail = service.IsMailExistsAddress(address);
+                                        if (isMail)
+                                            break;
+
+                                        // 2. get email user input
+                                        var mail = ui.ValidStringInput(Message.ENTER_EMAIL, Validate.regexPhone);
+
+                                        // 3. save the phone
+                                        service.EditPhoneByIDAddress(address, mail);
+
+                                        // 4. Show info edit successfully
+                                        ui.ShowMessage(Message.EDIT_SUCCESSFULLY);
+                                        break;
+
+                                    //edit location
+                                    case 3:
+                                        // 1. check exist property location in address
+                                        bool isLocaltion = service.IsMailExistsAddress(address);
+                                        if (isLocaltion)
+                                            break;
+                                        // 2. get email user input
+                                        var adressInput = ui.ValidStringInput(Message.ENTER_LOCATION, Validate.regexAddress);
+
+                                        // 3. save the phone
+                                        service.EditLocationByIDAddress(address, adressInput);
+
+                                        // 4. Show info edit successfully
+                                        ui.ShowMessage(Message.EDIT_SUCCESSFULLY);
+                                        break;
+                                    case 4:
+                                        Console.Clear();
+                                        break;
+
+                                    case 5:
+                                        return;
+
+                                    //default:
+                                    //    ui.DisplayCustomer(customer);
+                                    //    return;
+
+                                }
                                 break;
                             
-
-
-                            
                         }
-
-
-                        // 4. Save the customer
-
-                        // 5. Show info to let user know the customer is edit and stored
-
-                        //EditCustomer(ui, service, , customers);
-                        ui.ShowMessage(Message.EDIT_SUCCESSFULLY);
+                        
                         break;
 
                     //remove customer
