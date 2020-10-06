@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TinyCRM", "TinyCRM\TinyCRM.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TinyCRM2", "TiniCRM2\TinyCRM2.csproj", "{DF708E88-BB41-4795-A835-D9F9B6454B33}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleCalculation", "ConsoleCalculation\ConsoleCalculation.csproj", "{C77B7046-CB57-47DB-8D3A-72B707E35A49}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{DF708E88-BB41-4795-A835-D9F9B6454B33}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF708E88-BB41-4795-A835-D9F9B6454B33}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF708E88-BB41-4795-A835-D9F9B6454B33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C77B7046-CB57-47DB-8D3A-72B707E35A49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C77B7046-CB57-47DB-8D3A-72B707E35A49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C77B7046-CB57-47DB-8D3A-72B707E35A49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C77B7046-CB57-47DB-8D3A-72B707E35A49}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

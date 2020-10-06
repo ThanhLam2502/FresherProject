@@ -8,27 +8,55 @@ namespace TiniCRM2
     internal class UserInterface
     {
         Validate _validate;
-        Message _message;
         public UserInterface()
         {
-            _message = new Message();
             _validate = new Validate();
         }
 
-        internal int GetIntergerInput(string text)
+        internal Choose GetOption()
         {
-        reup:
-            try{
-                Console.Write(text);
-                return Convert.ToInt32(Console.ReadLine());
-            }catch{
-                goto reup;
-            };
+            Console.WriteLine();
+            while (true)
+            {
+                try
+                {
+                    Console.Write("Select an option: ");
+                    int input = int.Parse(Console.ReadLine());
+                    switch (input)
+                    {
+                        case 1:
+                            return Choose.View;
+                        case 2:
+                            return Choose.Add;
+                        case 3:
+                            return Choose.Edit;
+                        case 4:
+                            return Choose.Delete;
+                        case 5:
+                            return Choose.Clear;
+                        case 6:
+                            return Choose.Exit;
+                        default:
+                            continue;
+                    }
+                }
+                catch (Exception)
+                {
+                    continue;
+                }
+            }
         }
-        internal string GetStringInput(string text)
+
+        internal string GetStringInput(string text, string regex)
         {
-            Console.Write(text);
-            return Console.ReadLine();
+            string input = "";
+            do
+            {
+                Console.Write(text);
+                input = Console.ReadLine();
+            } while (string.IsNullOrEmpty(input) || !_validate.IsValid(input, regex));
+
+            return input;
         }
 
         internal void DisplayMenu()
@@ -39,18 +67,16 @@ namespace TiniCRM2
             Console.WriteLine("3. EDIT A CUSTOMER");
             Console.WriteLine("4. DELETE A CUSTOMER");
             Console.WriteLine("5. CLEAR SCREEN");
-            Console.WriteLine("6. PRESS ANOTHER KEY NUMBER TO EXIT");
+            Console.WriteLine("6. EXIT");
         }
 
         internal void ShowAllCustomer(List<Customer> customers)
         {
             Console.WriteLine();
-            //1. if: List empty, show message EMPTY
-            if (customers.Count == 0)
-                ShowMessage(_message.EMPTY_CUSTOMER);
 
-            //2. else: Show all list Customer
-            else customers.ForEach(item => DisplayCustomer(item));
+            if (customers.Count == 0)
+                ShowMessage(Message.EMPTY_CUSTOMER);
+            else customers.ForEach(item => ShowCustomer(item));
 
             Console.WriteLine();
         }
@@ -59,25 +85,33 @@ namespace TiniCRM2
         public void DisplayMenuEditCustomer(Customer customer)
         {
             Console.WriteLine();
-            if(!string.IsNullOrEmpty(customer.FullName))
-                Console.WriteLine("1. FULL NAME");
-            if (customer.Address.Any())
-                Console.WriteLine("2. ADDRESS");
+            Console.WriteLine("1. FULL NAME");
+            Console.WriteLine("2. ADDRESS");
             Console.WriteLine("3. CLEAR");
-            Console.WriteLine("4. PRESS ANOTHER KEY NUMBER TO EXIT");
+            Console.WriteLine("4. EXIT");
         }
 
-        internal string GetIDFromScreen(List<Customer> customers)
+        internal string GetCustomerId()
         {
-            ShowAllCustomer(customers);
-            var chooseID = GetIntergerInput(_message.CHOOSE_ID).ToString();
+            var chooseID = GetOptionInput().ToString();
             return chooseID;
         }
 
-        public void DisplayCustomer(Customer item)
+        internal int GetOptionMenuEdit()
+        {
+
+            while (true)
+            {
+                int input = GetOptionInput();
+                if (input >= 1 && input <= 4)
+                    return input; 
+            }
+        }
+
+        public void ShowCustomer(Customer item)
         {
             Console.WriteLine(string.Format("ID: {0}, FULL NAME: {1}", item.ID, item.FullName));
-            DisplayContact(item);
+            ShowAllContact(item.Address);
         }
 
         public void ShowMessage(string message)
@@ -85,21 +119,21 @@ namespace TiniCRM2
             Console.WriteLine(message);
         }
 
-        internal Customer CustomerInput()
+        internal Customer EnterCustomerInfo()
         {
             Console.WriteLine();
             var customer = new Customer
             {
-                FullName = ValidInput(_message.ENTER_FULLNAME, Validate.regexName),
-                //GetStringInput(_message.ENTER_FULLNAME),
+                //FullName = ValidStringInput(Message.ENTER_FULLNAME, Validate.regexName),
             };
-            customer.Address = listAddressInput();
+            
             return customer;
         }
 
-        internal void DisplayContact(Customer customer)
+        internal void ShowAllContact(List<Address> addresses)
         {
-            customer.Address.ForEach(x =>
+            Console.WriteLine();
+            addresses.ForEach(x =>
             {
                 StringBuilder displayAddess = new StringBuilder();
 
@@ -116,37 +150,60 @@ namespace TiniCRM2
             });
         }
 
-        private List<Address> listAddressInput()
+        public List<Address> EnterListAddress()
         {
             List<Address> addresses = new List<Address>();
             while (true)
             {
                 DisplayMenuAddress();
-                int option = GetIntergerInput("");
+
+                int option = GetOptionInput();
                 switch (option)
                 {
                     case 1:
                         var itemAddress = new Address
                         {
                             ID = addresses.Count == 0 ? "1" : (addresses.Count + 1).ToString(),
-                            Phone = ValidInputOrNull(_message.ENTER_PHONE, Validate.regexPhone),//GetStringInput(_message.ENTER_EMAIL),
-                            Email = ValidInputOrNull(_message.ENTER_EMAIL, Validate.regexEmail),//GetStringInput(_message.ENTER_PHONE),
-                            Location = GetStringInput(_message.ENTER_LOCATION),
+                            Phone = ValidStringInputOrNull(Message.ENTER_PHONE, Validate.regexPhone),
+                            Email = ValidStringInputOrNull(Message.ENTER_EMAIL, Validate.regexEmail),
+                            //Location = GetStringInput(Message.ENTER_LOCATION),
                         };
                         addresses.Add(itemAddress);
+                        Console.WriteLine();
+                        ShowAllContact(addresses);
                         break;
-                    default:
+                    case 2:
+                        Console.Clear();
+                        ShowAllContact(addresses);
+                        break;
+                    case 3:
                         return addresses;
+                        //default:
+                        //    continue;
                 }
             }
         }
 
-        private string ValidInputOrNull(string message, string regex)
+        public int GetOptionInput()
+        {
+            while (true)
+                try
+                {
+                    Console.Write("Select an option: ");
+                    return int.Parse(Console.ReadLine());
+                }
+                catch (Exception)
+                {
+                    continue;
+                };
+        }
+
+        private string ValidStringInputOrNull(string message, string regex)
         {
             string input = "";
             do
             {
-                input = GetStringInput(message);
+                //input = GetStringInput(message);
                 if (string.IsNullOrEmpty(input))
                     break;
             } while (!_validate.IsValid(input, regex));
@@ -154,15 +211,15 @@ namespace TiniCRM2
             return input;
         }
 
-        internal string ValidInput(string message, string regex)
-        {
-            string input = "";
-            do{
-                input = GetStringInput(message);
-            } while (string.IsNullOrEmpty(input) || !_validate.IsValid(input, regex));
+        //internal string ValidStringInput(string message, string regex)
+        //{
+        //    string input = "";
+        //    do{
+        //        input = GetStringInput(message);
+        //    } while (string.IsNullOrEmpty(input) || !_validate.IsValid(input, regex));
 
-            return input;
-        }
+        //    return input;
+        //}
 
         internal void DisplayContactByID(List<Address> address, string idAddress)
         {
@@ -203,8 +260,8 @@ namespace TiniCRM2
             Console.WriteLine();
             Console.WriteLine("----------------------------");
             Console.WriteLine("1. ADD A ADDRESS");
-            Console.WriteLine("2. PRESS ANOTHER KEY NUMBER TO EXIT");
-            Console.Write("SELECT AN OPTION: ");
+            Console.WriteLine("2. CLEAR");
+            Console.WriteLine("3. EXIT");
         }
 
     }

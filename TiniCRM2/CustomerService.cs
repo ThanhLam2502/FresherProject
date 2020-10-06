@@ -12,7 +12,7 @@ namespace TiniCRM2
             _customerRepository = new CustomerRepository();
         }
 
-        internal List<Customer> getAllCustomers()
+        internal List<Customer> GetAllCustomers()
         {
             return _customerRepository.Customer;
         }
@@ -20,7 +20,7 @@ namespace TiniCRM2
         internal void AddCustomer(Customer newCustomer)
         {
             var listCustomer = _customerRepository.Customer;
-            var maxID = Convert.ToInt32(listCustomer.Max(item => item.ID));
+            int maxID = int.Parse(listCustomer.Max(item => item.ID));
  
             newCustomer.ID = maxID == 0 ?  "1" :  (maxID + 1).ToString();
 
@@ -57,6 +57,21 @@ namespace TiniCRM2
         internal void EditLocationByIDAddress(List<Address> address, string idAddress, string location)
         {
             address.First(item => item.ID.Equals(idAddress)).Location = location;
+        }
+
+        internal bool IsExistsCustomerID(string customerId)
+        {
+            return _customerRepository.Customer.Exists(item => customerId.Equals(item.ID));
+        }
+
+        internal Customer GetCustomerByID(string customerId)
+        {
+            return _customerRepository.Customer.First(item => customerId.Equals(item.ID));
+        }
+
+        internal bool isExistsAddress(List<Address> address)
+        {
+            return address.Any();
         }
     }
 }
