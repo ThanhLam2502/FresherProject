@@ -7,17 +7,23 @@ namespace TiniCRM2
 {
     internal class UserInterface
     {
+        Validate _validate;
         Message _message;
         public UserInterface()
         {
             _message = new Message();
+            _validate = new Validate();
         }
 
         internal int GetIntergerInput(string text)
         {
-            Console.Write(text);
-            return Convert.ToInt32(Console.ReadLine());
-
+        reup:
+            try{
+                Console.Write(text);
+                return Convert.ToInt32(Console.ReadLine());
+            }catch{
+                goto reup;
+            };
         }
         internal string GetStringInput(string text)
         {
@@ -33,7 +39,7 @@ namespace TiniCRM2
             Console.WriteLine("3. EDIT A CUSTOMER");
             Console.WriteLine("4. DELETE A CUSTOMER");
             Console.WriteLine("5. CLEAR SCREEN");
-            Console.WriteLine("6. PRESS ANOTHER KEY TO EXIT");
+            Console.WriteLine("6. PRESS ANOTHER KEY NUMBER TO EXIT");
         }
 
         internal void ShowAllCustomer(List<Customer> customers)
@@ -58,13 +64,13 @@ namespace TiniCRM2
             if (customer.Address.Any())
                 Console.WriteLine("2. ADDRESS");
             Console.WriteLine("3. CLEAR");
-            Console.WriteLine("4. PRESS ANOTHER KEY TO EXIT");
+            Console.WriteLine("4. PRESS ANOTHER KEY NUMBER TO EXIT");
         }
 
         internal string GetIDFromScreen(List<Customer> customers)
         {
             ShowAllCustomer(customers);
-            var chooseID = GetStringInput(_message.CHOOSE_ID);
+            var chooseID = GetIntergerInput(_message.CHOOSE_ID).ToString();
             return chooseID;
         }
 
@@ -84,7 +90,8 @@ namespace TiniCRM2
             Console.WriteLine();
             var customer = new Customer
             {
-                FullName = GetStringInput(_message.ENTER_FULLNAME),
+                FullName = ValidInput(_message.ENTER_FULLNAME, Validate.regexName),
+                //GetStringInput(_message.ENTER_FULLNAME),
             };
             customer.Address = listAddressInput();
             return customer;
@@ -122,8 +129,8 @@ namespace TiniCRM2
                         var itemAddress = new Address
                         {
                             ID = addresses.Count == 0 ? "1" : (addresses.Count + 1).ToString(),
-                            Email = GetStringInput(_message.ENTER_PHONE),
-                            Phone = GetStringInput(_message.ENTER_EMAIL),
+                            Phone = ValidInputOrNull(_message.ENTER_PHONE, Validate.regexPhone),//GetStringInput(_message.ENTER_EMAIL),
+                            Email = ValidInputOrNull(_message.ENTER_EMAIL, Validate.regexEmail),//GetStringInput(_message.ENTER_PHONE),
                             Location = GetStringInput(_message.ENTER_LOCATION),
                         };
                         addresses.Add(itemAddress);
@@ -132,6 +139,29 @@ namespace TiniCRM2
                         return addresses;
                 }
             }
+        }
+
+        private string ValidInputOrNull(string message, string regex)
+        {
+            string input = "";
+            do
+            {
+                input = GetStringInput(message);
+                if (string.IsNullOrEmpty(input))
+                    break;
+            } while (!_validate.IsValid(input, regex));
+
+            return input;
+        }
+
+        internal string ValidInput(string message, string regex)
+        {
+            string input = "";
+            do{
+                input = GetStringInput(message);
+            } while (string.IsNullOrEmpty(input) || !_validate.IsValid(input, regex));
+
+            return input;
         }
 
         internal void DisplayContactByID(List<Address> address, string idAddress)
@@ -165,7 +195,7 @@ namespace TiniCRM2
                 Console.WriteLine("3. LOCATION");
 
             Console.WriteLine("4. CLEAR SCREEN");
-            Console.WriteLine("5. PRESS ANOTHER KEY TO EXIT");
+            Console.WriteLine("5. PRESS ANOTHER KEY NUMBER TO EXIT");
         }
 
         internal void DisplayMenuAddress()
@@ -173,7 +203,7 @@ namespace TiniCRM2
             Console.WriteLine();
             Console.WriteLine("----------------------------");
             Console.WriteLine("1. ADD A ADDRESS");
-            Console.WriteLine("2. PRESS ANOTHER KEY TO EXIT");
+            Console.WriteLine("2. PRESS ANOTHER KEY NUMBER TO EXIT");
             Console.Write("SELECT AN OPTION: ");
         }
 

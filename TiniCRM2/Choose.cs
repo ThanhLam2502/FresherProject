@@ -1,6 +1,6 @@
 ﻿namespace TiniCRM2
 {
-    internal enum Choose
+    public enum Choose
     {
         View = 1,
         Add = 2,
