@@ -17,5 +17,6 @@ namespace TiniCRM2
         public readonly static string ADD_SUCCESSFULLY = "ADD CUSTOMER SUCCESSFULLY";
         public readonly static string EXIT = "BYE";
         public readonly static string NOT_FOUND = "NOT FOUND";
+        public readonly static string INVALID_OPTION = "YOUR OPTION IS INCORRECT, ENTER YOUR OPTION AGAIN: ";
     }
 }

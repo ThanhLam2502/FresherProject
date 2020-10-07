@@ -47,18 +47,6 @@ namespace TiniCRM2
             }
         }
 
-        internal string GetStringInput(string text, string regex)
-        {
-            string input = "";
-            do
-            {
-                Console.Write(text);
-                input = Console.ReadLine();
-            } while (string.IsNullOrEmpty(input) || !_validate.IsValid(input, regex));
-
-            return input;
-        }
-
         internal void DisplayMenu()
         {
             Console.WriteLine("===================MENU===================");
@@ -74,7 +62,7 @@ namespace TiniCRM2
         {
             if (customers.Count == 0)
                 ShowMessage(Message.EMPTY_CUSTOMER);
-            else customers.ForEach(item => ShowCustomer(item));
+            else customers.ForEach(item => ShowCustomerInfo(item));
 
             Console.WriteLine();
         }
@@ -83,10 +71,16 @@ namespace TiniCRM2
         public void DisplayMenuEditCustomer(Customer customer)
         {
             Console.WriteLine();
+            Console.WriteLine("-----------------------");
             Console.WriteLine("1. FULL NAME");
             Console.WriteLine("2. ADDRESS");
             Console.WriteLine("3. CLEAR");
-            Console.WriteLine("4. EXIT");
+            Console.WriteLine("4. EXIT EDIT CUSTOMER");
+        }
+
+        internal void ClearScreen()
+        {
+            Console.Clear();
         }
 
         internal string GetCustomerId()
@@ -95,21 +89,33 @@ namespace TiniCRM2
             return chooseID;
         }
 
-        internal int GetOptionMenuEdit()
+        internal OptionCustomer GetOptionMenuEdit()
         {
-
+            int input = -1;
             while (true)
             {
-                int input = GetOptionInput();
+                input = GetOptionInput();
                 if (input >= 1 && input <= 4)
-                    return input; 
+                    break; 
+            }
+            switch (input)
+            {
+                case 1:
+                    return OptionCustomer.FullName;
+                case 2:
+                    return OptionCustomer.Address;
+                case 3:
+                    return OptionCustomer.Clear;
+                default:
+                    return OptionCustomer.Exit;
             }
         }
 
-        public void ShowCustomer(Customer item)
+        public void ShowCustomerInfo(Customer item)
         {
+            Console.WriteLine();
             Console.WriteLine(string.Format("ID: {0}, FULL NAME: {1}", item.ID, item.FullName));
-            ShowAllContact(item.Address);
+            ShowAllAddress(item.Address);
         }
 
         public void ShowMessage(string message)
@@ -122,30 +128,27 @@ namespace TiniCRM2
             Console.WriteLine();
             var customer = new Customer
             {
-                //FullName = ValidStringInput(Message.ENTER_FULLNAME, Validate.regexName),
+                FullName = ValidStringInput(Message.ENTER_FULLNAME, Validate.regexName),
             };
             
             return customer;
         }
 
-        internal void ShowAllContact(List<Address> addresses)
+        internal void ShowMenuEditCustomer(Customer customer)
         {
-            addresses.ForEach(x =>
+            // 1 Show info Customer by ID
+            ShowCustomerInfo(customer);
+
+            // 2 Show menu Edit Customer
+            DisplayMenuEditCustomer(customer);
+        }
+
+        internal void ShowAllAddress(List<Address> addresses)
+        {
+            addresses.ForEach(item =>
             {
-                StringBuilder displayAddess = new StringBuilder();
-
-                displayAddess.Append(string.Format("\tADDRESS ID: {0}", x.ID));
-
-                if (!string.IsNullOrEmpty(x.Phone))
-                    displayAddess.Append(string.Format("\tPHONE: {0}", x.Phone));
-                if (!string.IsNullOrEmpty(x.Email))
-                    displayAddess.Append(string.Format("\tEMAIL: {0}", x.Email));
-                if (!string.IsNullOrEmpty(x.Location))
-                    displayAddess.Append(string.Format("\tLOCATION: {0}", x.Location));
-
-                Console.WriteLine(displayAddess);
+                ShowInfoAddress(item);
             });
-            Console.WriteLine();
         }
 
         internal string GetIDFromUI()
@@ -161,30 +164,61 @@ namespace TiniCRM2
             {
                 DisplayMenuAddress();
 
-                int option = GetOptionInput();
+                var option = GetOptionAddAddress();
                 switch (option)
                 {
-                    case 1:
+                    case AddAddress.Add:
                         var itemAddress = new Address
                         {
                             ID = addresses.Count == 0 ? "1" : (addresses.Count + 1).ToString(),
                             Phone = ValidStringInputOrNull(Message.ENTER_PHONE, Validate.regexPhone),
                             Email = ValidStringInputOrNull(Message.ENTER_EMAIL, Validate.regexEmail),
-                            //Location = GetStringInput(Message.ENTER_LOCATION),
+                            Location = ValidStringInputOrNull(Message.ENTER_LOCATION, Validate.regexLocation),
                         };
                         addresses.Add(itemAddress);
                         Console.WriteLine();
-                        ShowAllContact(addresses);
+                        ShowAllAddress(addresses);
                         break;
-                    case 2:
+
+                    case AddAddress.Clear:
                         Console.Clear();
-                        ShowAllContact(addresses);
+                        ShowAllAddress(addresses);
                         break;
-                    case 3:
+
+                    case AddAddress.Exit:
                         return addresses;
-                        //default:
-                        //    continue;
                 }
+            }
+        }
+
+        internal void ShowMenuEditAddress(Address address)
+        {
+            // 1. Show Info Addresss
+            ShowInfoAddress(address);
+
+            // 2. Show menu edit Address
+            DisplayMenuEditAddress(address);
+        }
+
+        private AddAddress GetOptionAddAddress()
+        {
+            int input = -1;
+            while (true)
+            {
+                input = GetOptionInput();
+                if (input >= 1 || input <= 3)
+                    break;
+            }
+            switch (input)
+            {
+                case 1:
+                    return AddAddress.Add;
+
+                case 2:
+                    return AddAddress.Clear;
+
+                default:
+                    return AddAddress.Exit;
             }
         }
 
@@ -204,25 +238,26 @@ namespace TiniCRM2
 
         private string ValidStringInputOrNull(string message, string regex)
         {
-            string input = "";
+            string input = string.Empty;
             do
             {
-                //input = GetStringInput(message);
-                if (string.IsNullOrEmpty(input))
+                Console.Write(message);
+                input = Console.ReadLine();
+                if (string.IsNullOrEmpty(input) || _validate.IsValid(input, regex))
                     break;
-            } while (!_validate.IsValid(input, regex));
+            } while (true);
 
             return input;
         }
 
         internal string ValidStringInput(string message, string regex)
         {
-            string input = "";
+            string input = string.Empty;
             do
             {
                 Console.Write(message);
                 input = Console.ReadLine();
-            } while (string.IsNullOrEmpty(input) || !_validate.IsValid(input, regex));
+            } while (!_validate.IsValid(input, regex));
 
             return input;
         }
@@ -231,7 +266,7 @@ namespace TiniCRM2
         {
             var _address = address.First(item => idAddress.Equals(item.ID));
             StringBuilder displayAddess = new StringBuilder();
-
+            Console.WriteLine("-----------------------");
             displayAddess.Append(string.Format("\tADDRESS ID: {0}", _address.ID));
 
             if (!string.IsNullOrEmpty(_address.Phone))
@@ -244,10 +279,38 @@ namespace TiniCRM2
             Console.WriteLine(displayAddess);
         }
 
-        internal void DisplayMenuEditContact(Address address)
+        internal OptionAddress GetOptionEditAdress()
+        {
+            int input = -1;
+            while (true)
+            {
+                input = GetOptionInput();
+                if (input >= 1 && input <= 5)
+                    break;
+            }
+            switch (input)
+            {
+                case 1:
+                    return OptionAddress.Phone;
+
+                case 2:
+                    return OptionAddress.Email;
+
+                case 3:
+                    return OptionAddress.Location;
+
+                case 4:
+                    return OptionAddress.Clear;
+
+                default:
+                    return OptionAddress.Exit;
+            }
+        }
+
+        internal void DisplayMenuEditAddress(Address address)
         {
             Console.WriteLine();
-            Console.WriteLine("---------------------------");
+            Console.WriteLine("-----------------------");
 
             if (!string.IsNullOrEmpty(address.Phone))
                 Console.WriteLine("1. PHONE");
@@ -255,9 +318,8 @@ namespace TiniCRM2
                 Console.WriteLine("2. EMAIL");
             if (!string.IsNullOrEmpty(address.Location))
                 Console.WriteLine("3. LOCATION");
-
-            Console.WriteLine("4. CLEAR SCREEN");
-            Console.WriteLine("5. EXIT");
+            Console.WriteLine("4. CLEAR");
+            Console.WriteLine("5. EXIT EDIT ADDRESS");
         }
 
         internal void DisplayMenuAddress()
@@ -266,9 +328,24 @@ namespace TiniCRM2
             Console.WriteLine("----------------------------");
 
             Console.WriteLine("1. ADD A ADDRESS");
-            Console.WriteLine("2. CLEAR");
+            Console.WriteLine("2. CLEAR SCREEN");
             Console.WriteLine("3. EXIT");
         }
 
+        internal void ShowInfoAddress(Address address)
+        {
+            StringBuilder displayAddess = new StringBuilder();
+
+                displayAddess.Append(string.Format("\tADDRESS ID: {0}", address.ID));
+
+                if (!string.IsNullOrEmpty(address.Phone))
+                    displayAddess.Append(string.Format("\tPHONE: {0}", address.Phone));
+                if (!string.IsNullOrEmpty(address.Email))
+                    displayAddess.Append(string.Format("\tEMAIL: {0}", address.Email));
+                if (!string.IsNullOrEmpty(address.Location))
+                    displayAddess.Append(string.Format("\tLOCATION: {0}", address.Location));
+
+                Console.WriteLine(displayAddess);
+        }
     }
 }

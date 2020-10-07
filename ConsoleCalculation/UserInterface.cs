@@ -7,7 +7,7 @@ namespace ConsoleCalculation
         internal Operator GetInputOperator()
         {
             var input = GetIntergerInput();
-            switch
+            //switch
             return Operator.Add;
         }
         internal int GetIntergerInput(string text)

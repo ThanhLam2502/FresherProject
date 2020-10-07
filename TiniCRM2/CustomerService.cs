@@ -32,10 +32,7 @@ namespace TiniCRM2
         {
             _customerRepository.Customer.RemoveAll(item => item.ID.Equals(id));
         }
-        internal void DeleteAllCustomer()
-        {
-            _customerRepository.Customer = new List<Customer>();
-        }
+  
         internal void EditFullNameCustomer(Customer customer, string fullName)
         {
             customer.FullName = fullName;
