@@ -31,45 +31,17 @@ namespace TiniCRM2
 
                     // Add customers from users
                     case Choose.Add:
-                        #region Option Add Customer
-                        // 1. User input Customer info
-                            // 1.1 User input Full Name
-                        Customer newCustomer = ui.EnterCustomerInfo();
-
-                            // 1.2 User add Address Customer
-                        newCustomer.Address = ui.EnterListAddress();
-
-                        // 2. Save the Customer 
-                        service.AddCustomer(newCustomer);
-
-                        // 3. Show info to let user know the customer is added and stored
-                        ui.ShowMessage(Message.ADD_SUCCESSFULLY); 
-                        #endregion
+                        AddCustomer(ui, service);
                         break;
 
                     // Edit customer
                     case Choose.Edit:
-                        #region Option Edit Customer
-                        // 1. Show all customer info
-                        ui.ShowAllCustomer(customers);
-
-                        // 2. Edit customer info
-                        EditCustomerInfo(ui, service);
-                        #endregion
+                        EditCustomer(ui, service, customers);
                         break;
 
                     //remove customer
                     case Choose.Delete:
-                        #region Option Delete Customer
-                        // 1. Show all Customer
-                        ui.ShowAllCustomer(customers);
-
-                        // 2. DeleteCustomer
-                        DeleteCustomter(ui, service);
-                        
-                        // 4. Show info to let user know the customer is remove 
-                        ui.ShowMessage(Message.DELETE_SUCCESSFULLY);
-                        #endregion
+                        DeleteCustomter(ui, service, customers);
                         break;
 
                     //clear screen
@@ -82,18 +54,44 @@ namespace TiniCRM2
                         Console.WriteLine("=========*=========");
                         ui.ShowMessage("\t" + Message.EXIT);
                         return;
+
+                    default:
+                        return;
                 }
                 Console.WriteLine();
             }
         }
 
+
+        private static void AddCustomer(UserInterface ui, CustomerService service)
+        {
+            // 1. User input Customer info
+            Customer newCustomer = ui.EnterCustomerInfo();
+
+            // 2. Save the Customer 
+            service.AddCustomer(newCustomer);
+
+            // 3. Show info to let user know the customer is added and stored
+            ui.ShowMessage(Message.ADD_SUCCESSFULLY);
+        }
+        private static void EditCustomer(UserInterface ui, CustomerService service, List<Customer> customers)
+        {
+            // 1. Show all customer info
+            ui.ShowAllCustomer(customers);
+
+            // 2. Edit customer info
+            EditCustomerInfo(ui, service);
+        }
+
         private static void EditCustomerInfo(UserInterface ui, CustomerService service)
         {
+            #region Get Customer From UI
             // 2. Get customer Id from UI
-            var customerId = GetCustomerIDFromUI(ui, service);
+            string customerId = GetCustomerIDFromUI(ui, service);
 
             // 3. Get customer by ID from service
-            Customer customer = service.GetCustomerByID(customerId);
+            Customer customer = service.GetCustomerByID(customerId); 
+            #endregion
 
             // 4. Edit customer info
             // loop Edit Customer for when choose Exit
@@ -106,7 +104,7 @@ namespace TiniCRM2
                 ui.ShowMenuEditCustomer(customer);
 
                 // 2. User enter an option Edit customer: Full Name, Address
-                var input = ui.GetOptionMenuEdit();
+                OptionCustomer input = ui.GetOptionMenuEdit();
 
                 // 3. Based on the option, execute the operation
                 switch (input)
@@ -128,7 +126,7 @@ namespace TiniCRM2
 
                     // User choose edit Address
                     case OptionCustomer.Address:
-                        #region Option Edit List Address
+                        #region Option Edit Address
                         // 1. Check for exist list Address
                         bool isListAddress = service.IsExistsAddress(customer.Address);
                         if (!isListAddress)
@@ -154,7 +152,7 @@ namespace TiniCRM2
                             ui.ShowMenuEditAddress(address);
                             
                             // 2. User choose an option: Phone, Email, Location, Exit Edit Address
-                            var optionEditAdress = ui.GetOptionEditAdress();
+                            OptionAddress optionEditAdress = ui.GetOptionEditAdress();
 
                             // 3. Edit Addreess by option
                             switch (optionEditAdress)
@@ -171,7 +169,7 @@ namespace TiniCRM2
                                         break;
                                     }
                                     // 2. get Phone user input
-                                    var phone = ui.ValidStringInput(Message.ENTER_PHONE, Validate.regexPhone);
+                                    string phone = ui.ValidStringInput(Message.ENTER_PHONE, Validate.regexPhone);
 
                                     // 3. save the phone
                                     service.EditPhoneByIDAddress(address, phone);
@@ -194,7 +192,7 @@ namespace TiniCRM2
                                     }
 
                                     // 2. get email user input
-                                    var mail = ui.ValidStringInput(Message.ENTER_EMAIL, Validate.regexEmail);
+                                    string mail = ui.ValidStringInput(Message.ENTER_EMAIL, Validate.regexEmail);
 
                                     // 3. save the phone
                                     service.EditPhoneByIDAddress(address, mail);
@@ -217,7 +215,7 @@ namespace TiniCRM2
                                     }
 
                                     // 2. get email user input
-                                    var adressInput = ui.ValidStringInput(Message.ENTER_LOCATION, Validate.regexLocation);
+                                    string adressInput = ui.ValidStringInput(Message.ENTER_LOCATION, Validate.regexLocation);
 
                                     // 3. save the phone
                                     service.EditLocationByIDAddress(address, adressInput);
@@ -262,13 +260,20 @@ namespace TiniCRM2
             // end loop
         }
 
-        private static void DeleteCustomter(UserInterface ui, CustomerService service)
+        private static void DeleteCustomter(UserInterface ui, CustomerService service, List<Customer> customers)
         {
             // 1. User enter an option ID customer Delete from UI
-            var customerID = GetCustomerIDFromUI(ui, service);
+            var ID = ui.GetCustomerFromUI(customers);
 
-            // 2. Delete customer by ID
-            service.DeleteCustomer(customerID);
+            // 2. Check exis Customer
+            var isCusttomer = service.IsExistsCustomerID(ID);
+
+            // 3. Delete customer by ID
+            if(isCusttomer)
+                service.DeleteCustomer(ID);
+
+            // 4. Show info to let user know the customer is remove 
+            ui.ShowMessage(Message.DELETE_SUCCESSFULLY);
         }
 
         private static Address GetAddressServiceFromUI(UserInterface ui, CustomerService service, Customer customer)
@@ -291,21 +296,6 @@ namespace TiniCRM2
             Address address = service.GetAddressByID(customer.Address, addressID);
 
             return address;
-        }
-
-        private static string GetCustomerIDFromUI(UserInterface ui, CustomerService service)
-        {
-            var ID = String.Empty;
-            while (true)
-            {
-                // 1. Get customer ID from User
-                ID = ui.GetCustomerId();
-
-                // 2. Check exist CustomerID    
-                bool isCustomerID = service.IsExistsCustomerID(ID);
-                if (isCustomerID)
-                    return ID;
-            }
         }
     }
 }

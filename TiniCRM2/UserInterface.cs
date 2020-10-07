@@ -130,7 +130,8 @@ namespace TiniCRM2
             {
                 FullName = ValidStringInput(Message.ENTER_FULLNAME, Validate.regexName),
             };
-            
+            customer.Address = EnterListAddress();
+
             return customer;
         }
 
@@ -346,6 +347,13 @@ namespace TiniCRM2
                     displayAddess.Append(string.Format("\tLOCATION: {0}", address.Location));
 
                 Console.WriteLine(displayAddess);
+        }
+
+        internal string GetCustomerFromUI(List<Customer> customers)
+        {
+            ShowAllCustomer(customers);
+            var ID = GetCustomerId();
+            return ID;
         }
     }
 }

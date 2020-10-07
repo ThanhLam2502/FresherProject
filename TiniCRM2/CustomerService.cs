@@ -30,7 +30,7 @@ namespace TiniCRM2
 
         internal void DeleteCustomer(string id)
         {
-            _customerRepository.Customer.RemoveAll(item => item.ID.Equals(id));
+            _customerRepository(.delete)
         }
   
         internal void EditFullNameCustomer(Customer customer, string fullName)
@@ -87,5 +87,6 @@ namespace TiniCRM2
         {
             return string.IsNullOrEmpty(address.Email);
         }
+
     }
 }
