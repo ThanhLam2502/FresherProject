@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
@@ -58,11 +59,11 @@ namespace TiniCRM2
             Console.WriteLine("6. EXIT");
         }
 
-        internal void ShowAllCustomer(List<Customer> customers)
+        internal void ShowListCustomer(List<Customer> customers)
         {
             if (customers.Count == 0)
                 ShowMessage(Message.EMPTY_CUSTOMER);
-            else customers.ForEach(item => ShowCustomerInfo(item));
+            else customers.ForEach(item => ShowCustomer(item));
 
             Console.WriteLine();
         }
@@ -74,8 +75,104 @@ namespace TiniCRM2
             Console.WriteLine("-----------------------");
             Console.WriteLine("1. FULL NAME");
             Console.WriteLine("2. ADDRESS");
-            Console.WriteLine("3. CLEAR");
+            Console.WriteLine("3. CLEAR SCREEN");
             Console.WriteLine("4. EXIT EDIT CUSTOMER");
+        }
+
+        internal Customer GetCustomerFromUI(List<Customer> customers)
+        {
+            // 1. Get customer info from UI
+            Customer customer = GetCustomerInfo(customers);
+
+            // 2. Show menu edit customer 
+            ClearScreen();
+            while (true)
+            {
+                ShowMenuEditCustomer(customer);
+
+                // 3. User chosse an option: FullName, Exit
+                OptionCustomer input = GetOptionMenuEdit();
+                switch (input)
+                {
+                    // User choose edit Full Name
+                    case OptionCustomer.FullName:
+                        customer.FullName = ValidStringInput(Message.ENTER_FULLNAME, Validate.regexName);
+                        break;
+
+                    // User choose edit Address
+                    case OptionCustomer.Address:
+                        customer.Address = GetAddressFromUI(customer.Address);
+                        break;
+
+                    // User choose Clear
+                    case OptionCustomer.Clear:
+                        ClearScreen();
+                        break;
+
+                    // User choose Exit
+                    case OptionCustomer.Exit:
+                        return customer;
+                }
+                
+            }
+        }
+
+        private Customer GetCustomerInfo(List<Customer> customers)
+        {
+            ClearScreen();
+            ShowListCustomer(customers);
+            string customerId = GetCustomerId();
+            var customer = customers.FirstOrDefault(_ => _.ID.Equals(customerId));
+
+            if (customer == null)
+                throw new Exception(Message.INVALID_OPTION);
+
+            return customer;
+        }
+
+        private List<Address> GetAddressFromUI(List<Address> listAddress)
+        {
+            if (!listAddress.Any())
+                throw new Exception(Message.INVALID_OPTION);
+
+            ClearScreen();
+            ShowAllAddress(listAddress);
+            var addressID = GetIDFromUI();
+            var address = listAddress.FirstOrDefault(_ => _.ID.Equals(addressID));
+            if (address == null)
+                throw new Exception(Message.INVALID_OPTION);
+            while (true)
+            {
+                ShowMenuEditAddress(address);
+
+                OptionAddress input = GetOptionEditAdress();
+                switch (input)
+                {
+                    case OptionAddress.Phone:
+                        if (string.IsNullOrEmpty(address.Phone))
+                            throw new Exception(Message.INVALID_OPTION);
+                        address.Phone = ValidStringInput(Message.ENTER_PHONE, Validate.regexPhone);
+                        break;
+                    case OptionAddress.Email:
+                        if (string.IsNullOrEmpty(address.Email))
+                            throw new Exception(Message.INVALID_OPTION);
+                        address.Email = ValidStringInput(Message.ENTER_EMAIL, Validate.regexEmail);
+                        break;
+                    case OptionAddress.Location:
+                        if (string.IsNullOrEmpty(address.Location))
+                            throw new Exception(Message.INVALID_OPTION);
+                        address.Location = ValidStringInput(Message.ENTER_LOCATION, Validate.regexLocation);
+                        break;
+
+                    case OptionAddress.Clear:
+                        ClearScreen();
+                        break;
+
+                    case OptionAddress.Exit:
+                        return listAddress;
+                }
+            }
+            
         }
 
         internal void ClearScreen()
@@ -96,27 +193,36 @@ namespace TiniCRM2
             {
                 input = GetOptionInput();
                 if (input >= 1 && input <= 4)
-                    break; 
+                    break;
             }
             switch (input)
             {
                 case 1:
                     return OptionCustomer.FullName;
+
                 case 2:
                     return OptionCustomer.Address;
+
                 case 3:
                     return OptionCustomer.Clear;
+
                 default:
                     return OptionCustomer.Exit;
             }
         }
 
-        public void ShowCustomerInfo(Customer item)
+        public void ShowCustomer(Customer item)
         {
             Console.WriteLine();
             Console.WriteLine(string.Format("ID: {0}, FULL NAME: {1}", item.ID, item.FullName));
             ShowAllAddress(item.Address);
         }
+        //public void ShowCustomerInfo(Customer item)
+        //{
+        //    Console.WriteLine();
+        //    Console.WriteLine(string.Format("ID: {0}, FULL NAME: {1}", item.ID, item.FullName));
+        //    ShowAllAddress(item.Address);
+        //}
 
         public void ShowMessage(string message)
         {
@@ -130,7 +236,7 @@ namespace TiniCRM2
             {
                 FullName = ValidStringInput(Message.ENTER_FULLNAME, Validate.regexName),
             };
-            customer.Address = EnterListAddress();
+            customer.Address = EnterListAddress(customer);
 
             return customer;
         }
@@ -138,7 +244,7 @@ namespace TiniCRM2
         internal void ShowMenuEditCustomer(Customer customer)
         {
             // 1 Show info Customer by ID
-            ShowCustomerInfo(customer);
+            ShowCustomer(customer);
 
             // 2 Show menu Edit Customer
             DisplayMenuEditCustomer(customer);
@@ -158,13 +264,14 @@ namespace TiniCRM2
             return input.ToString();
         }
 
-        public List<Address> EnterListAddress()
+        public List<Address> EnterListAddress(Customer customer)
         {
             List<Address> addresses = new List<Address>();
             while (true)
             {
-                DisplayMenuAddress();
+                ShowAllAddress(addresses);
 
+                DisplayMenuAddress();
                 var option = GetOptionAddAddress();
                 switch (option)
                 {
@@ -178,12 +285,10 @@ namespace TiniCRM2
                         };
                         addresses.Add(itemAddress);
                         Console.WriteLine();
-                        ShowAllAddress(addresses);
                         break;
 
                     case AddAddress.Clear:
                         Console.Clear();
-                        ShowAllAddress(addresses);
                         break;
 
                     case AddAddress.Exit:
@@ -239,6 +344,7 @@ namespace TiniCRM2
 
         private string ValidStringInputOrNull(string message, string regex)
         {
+            ClearScreen();
             string input = string.Empty;
             do
             {
@@ -253,6 +359,7 @@ namespace TiniCRM2
 
         internal string ValidStringInput(string message, string regex)
         {
+            ClearScreen();
             string input = string.Empty;
             do
             {
@@ -303,9 +410,13 @@ namespace TiniCRM2
                 case 4:
                     return OptionAddress.Clear;
 
+                //case 5:
+                //    return OptionAddress.Exit;
+
                 default:
                     return OptionAddress.Exit;
             }
+            
         }
 
         internal void DisplayMenuEditAddress(Address address)
@@ -319,7 +430,8 @@ namespace TiniCRM2
                 Console.WriteLine("2. EMAIL");
             if (!string.IsNullOrEmpty(address.Location))
                 Console.WriteLine("3. LOCATION");
-            Console.WriteLine("4. CLEAR");
+            
+            Console.WriteLine("4. CLEAR SCREEN");
             Console.WriteLine("5. EXIT EDIT ADDRESS");
         }
 
@@ -337,21 +449,21 @@ namespace TiniCRM2
         {
             StringBuilder displayAddess = new StringBuilder();
 
-                displayAddess.Append(string.Format("\tADDRESS ID: {0}", address.ID));
+            displayAddess.Append(string.Format("\tADDRESS ID: {0}", address.ID));
 
-                if (!string.IsNullOrEmpty(address.Phone))
-                    displayAddess.Append(string.Format("\tPHONE: {0}", address.Phone));
-                if (!string.IsNullOrEmpty(address.Email))
-                    displayAddess.Append(string.Format("\tEMAIL: {0}", address.Email));
-                if (!string.IsNullOrEmpty(address.Location))
-                    displayAddess.Append(string.Format("\tLOCATION: {0}", address.Location));
+            if (!string.IsNullOrEmpty(address.Phone))
+                displayAddess.Append(string.Format("\tPHONE: {0}", address.Phone));
+            if (!string.IsNullOrEmpty(address.Email))
+                displayAddess.Append(string.Format("\tEMAIL: {0}", address.Email));
+            if (!string.IsNullOrEmpty(address.Location))
+                displayAddess.Append(string.Format("\tLOCATION: {0}", address.Location));
 
-                Console.WriteLine(displayAddess);
+            Console.WriteLine(displayAddess);
         }
 
-        internal string GetCustomerFromUI(List<Customer> customers)
+        internal string GetIDCustomerFromUI(List<Customer> customers)
         {
-            ShowAllCustomer(customers);
+            ShowListCustomer(customers);
             var ID = GetCustomerId();
             return ID;
         }

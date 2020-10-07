@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace TiniCRM2
@@ -41,7 +42,10 @@ namespace TiniCRM2
                 }
             };
         }
-       
-       
+
+        internal void Edit(Customer customer)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
