@@ -17,37 +17,37 @@ namespace TiniCRM2
         {
             return _customerRepository.Customer;
         }
-        //
         internal void AddCustomer(Customer newCustomer)
         {
-            var listCustomer = _customerRepository.Customer;
-            int maxID = int.Parse(listCustomer.Max(item => item.ID));
+            // 1. Get max ID
+            string maxID = _customerRepository.GetMaxIDCustomer();
 
-            newCustomer.ID = maxID == 0 ? "1" : (maxID + 1).ToString();
+            // 2. Set ID newCustomer
+            newCustomer.ID = maxID.Equals("0") ? "1" : (maxID + 1).ToString();
 
-            listCustomer.Add(newCustomer);
+            // 3. Save newCustomer
+            _customerRepository.Add(newCustomer);
         }
-        //
         internal void EditCustomer(Customer customer)
         {
-            _customerRepository.Edit(customer);
+            // 1. Check customer exist in DB
+            if (IsExistsCustomerID(customer.ID))
+                _customerRepository.Update(customer);
+            else
+                throw new Exception(Message.NOT_FOUND);
         }
-        //
         internal void DeleteCustomer(string id)
         {
-            _customerRepository.Customer.RemoveAll(item => item.ID.Equals(id));
-        }
-        internal bool IsExistsCustomer(Customer customer)
-        {
-            return _customerRepository.Customer.Any(_ => customer.ID.Equals(_.ID));
+            if (IsExistsCustomerID(id))
+                _customerRepository.Remove(id);
+            else
+                throw new Exception(Message.NOT_FOUND);
         }
         internal bool IsExistsCustomerID(string customerId)
         {
-            return _customerRepository.Customer.Exists(item => customerId.Equals(item.ID));
-        }
-        internal bool IsExistsAddress(List<Address> address)
-        {
-            return address.Any();
+            var listCustomer = GetAllCustomers();
+
+            return listCustomer.Any(item => customerId.Equals(item.ID));
         }
 
     }

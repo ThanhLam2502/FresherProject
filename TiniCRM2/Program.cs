@@ -69,18 +69,15 @@ namespace TiniCRM2
                 // 1. Get info customer from UI 
                 Customer customer = ui.GetCustomerFromUI(customers);
 
-                // 2. Check exist customer
-                bool isCustomer = service.IsExistsCustomer(customer);
-
-                // 3. Save the info customer
+                // 2. Save the info customer
                 service.EditCustomer(customer);
 
-                // 4. Show info to let user know the customer is update
+                // 3. Show info to let user know the customer is update
                 ui.ShowMessage(Message.EDIT_SUCCESSFULLY);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                ui.ShowMessage(Message.ERROR);
+                ui.ShowMessage(e.Message);
             }
 
         }
@@ -97,20 +94,23 @@ namespace TiniCRM2
         }
         private static void DeleteCustomter(UserInterface ui, CustomerService service, List<Customer> customers)
         {
-            // 1. User enter an option ID customer Delete from UI
-            var ID = ui.GetIDCustomerFromUI(customers);
-
-            // 2. Check exis CustomerID
-            var isCusttomer = service.IsExistsCustomerID(ID);
-
-            if (isCusttomer)
+            try
             {
+                // 1. User enter an option ID customer Delete from UI
+                var ID = ui.GetIDCustomerFromUI(customers);
+
                 // 3. Delete customer by ID
                 service.DeleteCustomer(ID);
+
                 // 4. Show info to let user know the customer is remove 
+                    // Delete successfully
                 ui.ShowMessage(Message.DELETE_SUCCESSFULLY);
             }
-            else ui.ShowMessage(Message.ERROR);
+            catch (Exception e)
+            {
+                    // Error
+                ui.ShowMessage(e.Message);
+            }
         }
     }
 }

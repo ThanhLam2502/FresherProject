@@ -10,6 +10,7 @@ namespace TiniCRM2
 
         public CustomerRepository()
         {
+            //Customer = GetCustomerDB();
             Customer = new List<Customer> {
                 new Customer
                 {
@@ -43,9 +44,30 @@ namespace TiniCRM2
             };
         }
 
-        internal void Edit(Customer customer)
+        private List<Customer> GetCustomerDB()
         {
             throw new NotImplementedException();
+        }
+
+        internal string GetMaxIDCustomer()
+        {
+            return Customer.Max(_ => _.ID);
+        }
+        internal void Add(Customer newCustomer)
+        {
+            Customer.Add(newCustomer);
+        }
+        internal void Update(Customer customer)
+        {
+            var customerStore = Customer.FirstOrDefault(_ => _.ID.Equals(customer.ID));
+            if (customerStore != null)
+                customerStore = customer;
+            else
+                throw new Exception(Message.ERROR);
+        }
+        internal void Remove(string id)
+        {
+            Customer.RemoveAll(_ => _.ID.Equals(id));
         }
     }
 }

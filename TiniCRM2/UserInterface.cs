@@ -73,8 +73,10 @@ namespace TiniCRM2
         {
             Console.WriteLine();
             Console.WriteLine("-----------------------");
-            Console.WriteLine("1. FULL NAME");
-            Console.WriteLine("2. ADDRESS");
+            if (!string.IsNullOrEmpty(customer.FullName))
+                Console.WriteLine("1. FULL NAME");
+            if (customer.Address.Any())
+                Console.WriteLine("2. ADDRESS");
             Console.WriteLine("3. CLEAR SCREEN");
             Console.WriteLine("4. EXIT EDIT CUSTOMER");
         }
@@ -463,7 +465,9 @@ namespace TiniCRM2
 
         internal string GetIDCustomerFromUI(List<Customer> customers)
         {
+            ClearScreen();
             ShowListCustomer(customers);
+
             var ID = GetCustomerId();
             return ID;
         }
