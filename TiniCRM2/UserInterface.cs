@@ -219,7 +219,7 @@ namespace TiniCRM2
         public void ShowCustomer(Customer item)
         {
             Console.WriteLine();
-            Console.WriteLine(string.Format("ID: {0}, FULL NAME: {1}", item.ID, item.FullName));
+            Console.WriteLine("ID: {0}, FULL NAME: {1}", item.ID, item.FullName);
             ShowAllAddress(item.Address);
         }
 
