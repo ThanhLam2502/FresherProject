@@ -84,13 +84,13 @@ namespace TiniCRM2
         internal Customer GetCustomerFromUI(List<Customer> customers)
         {
             // 1. Get customer info from UI
-            Customer customer = GetCustomerInfo(customers);
+            Customer customerUI = GetCustomerInfo(customers);
 
             // 2. Show menu edit customer 
             ClearScreen();
             while (true)
             {
-                ShowMenuEditCustomer(customer);
+                ShowMenuEditCustomer(customerUI);
 
                 // 3. User chosse an option: FullName, Exit
                 OptionCustomer input = GetOptionMenuEdit();
@@ -98,12 +98,12 @@ namespace TiniCRM2
                 {
                     // User choose edit Full Name
                     case OptionCustomer.FullName:
-                        customer.FullName = ValidStringInput(Message.ENTER_FULLNAME, Validate.regexName);
+                        customerUI.FullName = ValidStringInput(Message.ENTER_FULLNAME, Validate.regexName);
                         break;
 
                     // User choose edit Address
                     case OptionCustomer.Address:
-                        customer.Address = GetAddressFromUI(customer.Address);
+                        customerUI.Address = GetAddressFromUI(customerUI.Address);
                         break;
 
                     // User choose Clear
@@ -113,7 +113,7 @@ namespace TiniCRM2
 
                     // User choose Exit
                     case OptionCustomer.Exit:
-                        return customer;
+                        return customerUI;
                 }
                 
             }
@@ -129,7 +129,9 @@ namespace TiniCRM2
             if (customer == null)
                 throw new Exception(Message.INVALID_OPTION);
 
-            return customer;
+            Customer customerUI = customer.Clone();
+
+            return customerUI;
         }
 
         private List<Address> GetAddressFromUI(List<Address> listAddress)
@@ -145,6 +147,7 @@ namespace TiniCRM2
                 throw new Exception(Message.INVALID_OPTION);
             while (true)
             {
+                ClearScreen();
                 ShowMenuEditAddress(address);
 
                 OptionAddress input = GetOptionEditAdress();
@@ -219,12 +222,6 @@ namespace TiniCRM2
             Console.WriteLine(string.Format("ID: {0}, FULL NAME: {1}", item.ID, item.FullName));
             ShowAllAddress(item.Address);
         }
-        //public void ShowCustomerInfo(Customer item)
-        //{
-        //    Console.WriteLine();
-        //    Console.WriteLine(string.Format("ID: {0}, FULL NAME: {1}", item.ID, item.FullName));
-        //    ShowAllAddress(item.Address);
-        //}
 
         public void ShowMessage(string message)
         {

@@ -23,7 +23,7 @@ namespace TiniCRM2
             string maxID = _customerRepository.GetMaxIDCustomer();
 
             // 2. Set ID newCustomer
-            newCustomer.ID = maxID.Equals("0") ? "1" : (maxID + 1).ToString();
+            newCustomer.ID = maxID.Equals("0") ? "1" : (int.Parse(maxID) + 1).ToString();
 
             // 3. Save newCustomer
             _customerRepository.Add(newCustomer);
@@ -32,6 +32,8 @@ namespace TiniCRM2
         {
             // 1. Check customer exist in DB
             if (IsExistsCustomerID(customer.ID))
+
+            // 2. Update customer
                 _customerRepository.Update(customer);
             else
                 throw new Exception(Message.NOT_FOUND);

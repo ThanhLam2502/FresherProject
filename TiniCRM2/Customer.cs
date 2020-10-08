@@ -16,6 +16,10 @@ namespace TiniCRM2
         {
             Address = new List<Address>();
         }
+        public Customer Clone()
+        {
+            return (Customer)MemberwiseClone();
+        }
 
     }
 }

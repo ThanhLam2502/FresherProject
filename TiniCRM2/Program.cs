@@ -10,11 +10,11 @@ namespace TiniCRM2
         {
             var ui = new UserInterface();
             var service = new CustomerService();
-            var customers = service.GetAllCustomers();
-
+            //var customers = service.GetAllCustomers();
             // 1. Execute the request user
             while (true)
             {
+                var customers = service.GetAllCustomers();
                 // 1. Show menu
                 ui.DisplayMenu();
 
@@ -26,6 +26,7 @@ namespace TiniCRM2
                 {
                     // Show list customer 
                     case Choose.View:
+                        
                         ui.ShowListCustomer(customers);
                         break;
 
@@ -61,6 +62,17 @@ namespace TiniCRM2
                 Console.WriteLine();
             }
         }
+        private static void AddCustomer(UserInterface ui, CustomerService service)
+        {
+            // 1. User input Customer info
+            Customer newCustomer = ui.EnterCustomerInfo();
+
+            // 2. Save the Customer 
+            service.AddCustomer(newCustomer);
+
+            // 3. Show info to let user know the customer is added and stored
+            ui.ShowMessage(Message.ADD_SUCCESSFULLY);
+        }
 
         private static void EditCustomer(UserInterface ui, CustomerService service, List<Customer> customers)
         {
@@ -80,17 +92,6 @@ namespace TiniCRM2
                 ui.ShowMessage(e.Message);
             }
 
-        }
-        private static void AddCustomer(UserInterface ui, CustomerService service)
-        {
-            // 1. User input Customer info
-            Customer newCustomer = ui.EnterCustomerInfo();
-
-            // 2. Save the Customer 
-            service.AddCustomer(newCustomer);
-
-            // 3. Show info to let user know the customer is added and stored
-            ui.ShowMessage(Message.ADD_SUCCESSFULLY);
         }
         private static void DeleteCustomter(UserInterface ui, CustomerService service, List<Customer> customers)
         {
