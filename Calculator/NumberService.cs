@@ -1,0 +1,8 @@
+﻿namespace Calculator
+{
+    
+    class NumberService
+    {
+      
+    }
+}

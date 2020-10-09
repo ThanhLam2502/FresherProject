@@ -17,7 +17,7 @@ namespace Calculator
             InitializeComponent();
 
 
-            var service = new CalculatorService();
+            var service = new NumberService();
         }
 
         private void Calculator_Load(object sender, EventArgs e)

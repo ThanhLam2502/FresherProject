@@ -6,7 +6,5 @@
         Subtract,
         Multiply,
         Division,
-        Clear,
-        Exit,
     }
 }

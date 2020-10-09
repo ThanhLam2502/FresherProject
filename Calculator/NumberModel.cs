@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Calculator
 {
-    public class CalculatorModel
+    public class NumberModel
     {
 
     }
