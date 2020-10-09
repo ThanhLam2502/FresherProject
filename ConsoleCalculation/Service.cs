@@ -1,35 +1,38 @@
-﻿namespace ConsoleCalculation
+﻿using System;
+
+namespace ConsoleCalculation
 {
     internal class Service
     {
         internal Service()
         {
         }
-        internal int Add(int result, int input)
+
+        internal void SetZeroNumber(Number number)
         {
-            return result + input;
+            number.Value = 0;
         }
 
-        internal int Subtract(int result, int input)
+        internal void Add(Number number, Number addNumber)
         {
-            return result - input;
+            number.Value += addNumber.Value;
         }
 
-        internal int Division(int result, int input)
-        {   
-            if (input == 0)   
-                throw new System.DivideByZeroException();
-            return result / input;
+        internal void Subtract(Number number, Number subNumber)
+        {
+            number.Value -= subNumber.Value;
         }
 
-        internal int Multiply(int result, int input)
+        internal void Multiply(Number number, Number multiNumber)
         {
-            return result * input;
+            number.Value *= multiNumber.Value;
         }
 
-        internal void SetResult(ref int result)
+        internal void Division(Number number, Number divNumber)
         {
-            result = 0;
+            if (divNumber.Value == 0)
+                throw new DivideByZeroException();
+            number.Value /= number.Value;
         }
     }
 }

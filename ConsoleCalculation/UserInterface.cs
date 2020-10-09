@@ -2,20 +2,10 @@
 
 namespace ConsoleCalculation
 {
-    public enum Operator
-    {
-        Add = 1,
-        Subtract,
-        Multiply,
-        Division,
-        Clear,
-        CleanScreen,
-        Exit,
-
-    }
+    
     internal class UserInterface
     {
-        internal Operator GetOptionOperator()
+        internal ChooseOption GetOptionOperator()
         {
             // 1. Show menu : Add, Subtract, Multiply, Division
             //ShowMenu();
@@ -24,39 +14,39 @@ namespace ConsoleCalculation
             int choose = GetNumberOption();
 
             // 3. Based on the option, return the operation
-            Operator op = new Operator();
+            ChooseOption op = new ChooseOption();
             switch (choose)
             {
                 case 43:
-                case (int)Operator.Add:
-                    op = Operator.Add;
+                case (int)ChooseOption.Add:
+                    op = ChooseOption.Add;
                     break;
 
                 case 45:
-                case (int)Operator.Subtract:
-                    op = Operator.Subtract;
+                case (int)ChooseOption.Subtract:
+                    op = ChooseOption.Subtract;
                     break;
 
                 case 42:
-                case (int)Operator.Multiply:
-                    op = Operator.Multiply;
+                case (int)ChooseOption.Multiply:
+                    op = ChooseOption.Multiply;
                     break;
 
                 case 47:
-                case (int)Operator.Division:
-                    op = Operator.Division;
+                case (int)ChooseOption.Division:
+                    op = ChooseOption.Division;
                     break;
 
-                case (int)Operator.Clear:
-                    op = Operator.Clear;
+                case (int)ChooseOption.Clear:
+                    op = ChooseOption.Clear;
                     break;
 
-                case (int)Operator.CleanScreen:
-                    op = Operator.CleanScreen;
+                case (int)ChooseOption.CleanScreen:
+                    op = ChooseOption.CleanScreen;
                     break;
 
-                case (int)Operator.Exit:
-                    op = Operator.Exit;
+                case (int)ChooseOption.Exit:
+                    op = ChooseOption.Exit;
                     break;
 
                 default:
@@ -74,17 +64,19 @@ namespace ConsoleCalculation
                 Console.WriteLine();
                 Console.Write("Enter a option: ");
                 var userInput = Console.ReadLine();
-                switch (userInput)
-                {
-                    case "+":
-                        return Convert.ToChar(userInput);
-                    case "-":
-                        return Convert.ToChar(userInput);
-                    case "*":
-                        return Convert.ToChar(userInput);
-                    case "/":
-                        return Convert.ToChar(userInput);
-                }
+                #region 2nd option
+                //switch (userInput)
+                //{
+                //    case "+":
+                //        return Convert.ToChar(userInput);
+                //    case "-":
+                //        return Convert.ToChar(userInput);
+                //    case "*":
+                //        return Convert.ToChar(userInput);
+                //    case "/":
+                //        return Convert.ToChar(userInput);
+                //} 
+                #endregion
                 var isNumber = int.TryParse(userInput, out number);
 
                 if (isNumber)
@@ -96,7 +88,7 @@ namespace ConsoleCalculation
 
         internal void ShowMessage(string message)
         {
-            Console.WriteLine(message);
+            Console.WriteLine(message); Console.WriteLine();
         }
 
         internal void CleanScreen()
@@ -116,6 +108,13 @@ namespace ConsoleCalculation
             Console.WriteLine("7. EXIT");
         }
 
+        internal Number GetNumber()
+        {
+            var number = new Number();
+            number.Value = GetNumberUserInput();
+            return number;
+        }
+
         internal int GetNumberUserInput()
         {
             while (true)
@@ -129,9 +128,9 @@ namespace ConsoleCalculation
             }
         }
 
-        internal void ShowResult(int result)
+        internal void ShowNumber(Number number)
         {
-            Console.WriteLine("Resuilt: {0}", result);
+            Console.WriteLine("Resuilt: {0}", number.Value);
         }
     }
 }

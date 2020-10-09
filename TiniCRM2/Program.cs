@@ -26,7 +26,6 @@ namespace TiniCRM2
                 {
                     // Show list customer 
                     case Choose.View:
-                        
                         ui.ShowListCustomer(customers);
                         break;
 
