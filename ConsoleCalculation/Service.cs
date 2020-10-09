@@ -1,17 +1,35 @@
-﻿using System;
-
-namespace ConsoleCalculation
+﻿namespace ConsoleCalculation
 {
     internal class Service
     {
-        private readonly int _resuilt;
-        Service()
+        internal Service()
         {
-
         }
-        internal int Add(int input)
+        internal int Add(int result, int input)
         {
-            throw new NotImplementedException();
+            return result + input;
+        }
+
+        internal int Subtract(int result, int input)
+        {
+            return result - input;
+        }
+
+        internal int Division(int result, int input)
+        {   
+            if (input == 0)   
+                throw new System.DivideByZeroException();
+            return result / input;
+        }
+
+        internal int Multiply(int result, int input)
+        {
+            return result * input;
+        }
+
+        internal void SetResult(ref int result)
+        {
+            result = 0;
         }
     }
 }

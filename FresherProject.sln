@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29519.87
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomerRelationshipManagement", "CustomerRelationshipManagement\CustomerRelationshipManagement.csproj", "{A4777687-4220-43A2-BBF0-38275D56A060}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TinyCRM", "TinyCRM\TinyCRM.csproj", "{01FD6C88-5A20-49B6-99D9-AC663E4FC3BC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TinyCRM2", "TiniCRM2\TinyCRM2.csproj", "{DF708E88-BB41-4795-A835-D9F9B6454B33}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleCalculation", "ConsoleCalculation\ConsoleCalculation.csproj", "{C77B7046-CB57-47DB-8D3A-72B707E35A49}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleCalculation", "ConsoleCalculation\ConsoleCalculation.csproj", "{C77B7046-CB57-47DB-8D3A-72B707E35A49}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calculator", "Calculator\Calculator.csproj", "{A0F85593-F9E3-43E7-B010-898F4B1D9BAB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A4777687-4220-43A2-BBF0-38275D56A060}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A4777687-4220-43A2-BBF0-38275D56A060}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A4777687-4220-43A2-BBF0-38275D56A060}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A4777687-4220-43A2-BBF0-38275D56A060}.Release|Any CPU.Build.0 = Release|Any CPU
 		{01FD6C88-5A20-49B6-99D9-AC663E4FC3BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{01FD6C88-5A20-49B6-99D9-AC663E4FC3BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{01FD6C88-5A20-49B6-99D9-AC663E4FC3BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -33,6 +29,10 @@ Global
 		{C77B7046-CB57-47DB-8D3A-72B707E35A49}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C77B7046-CB57-47DB-8D3A-72B707E35A49}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C77B7046-CB57-47DB-8D3A-72B707E35A49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0F85593-F9E3-43E7-B010-898F4B1D9BAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0F85593-F9E3-43E7-B010-898F4B1D9BAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0F85593-F9E3-43E7-B010-898F4B1D9BAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0F85593-F9E3-43E7-B010-898F4B1D9BAB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
