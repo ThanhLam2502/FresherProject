@@ -1,10 +1,11 @@
 ﻿namespace Calculator
 {
-    public enum Enum
+    public enum Operator
     {
         Add = 1,
         Subtract,
         Multiply,
         Division,
+        None,
     }
 }
