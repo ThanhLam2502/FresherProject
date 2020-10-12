@@ -13,7 +13,7 @@ namespace Calculator
 {
     public partial class Calculator : Form
     {
-        CalculatorModel calculatorUI;
+        private CalculatorModel calculatorUI;
         private CalculatorModel calculator;
         private CalculatorService service;
         public Calculator()
@@ -53,51 +53,37 @@ namespace Calculator
 
         private void BtnOperatorClick(Operator op, CalculatorModel calculator, CalculatorModel calculatorUI)
         {
-            // 1. Show UI
-            var Op = string.Empty;
-
-            calculatorUI.Op = op;
-            calculatorUI.Value = 0;
-            calculatorUI.Calculation = "Ans ";
-
-            switch (calculatorUI.Op)
+            string text = "Ans ";
+            
+            switch (op)
             {
                 case Operator.Add:
-                    Op = "+";
+                    calculatorUI.Calculation += calculatorUI.Value;
+                    text = calculatorUI.Calculation + " + " + calculatorUI.Calculation;
                     break;
                 case Operator.Subtract:
-                    Op = "-";
+                    calculatorUI.Calculation += calculatorUI.Value; // + calculatorUI.Calculation;
                     break;
                 case Operator.Multiply:
-                    Op = "*";
+                    calculatorUI.Calculation += " * ";
                     break;
                 case Operator.Division:
-                    Op = "/";
-                    break;
-                case Operator.None:
+                    calculatorUI.Calculation += " / ";
                     break;
             }
-
-            calculatorUI.Calculation += " " + Op + " ";
-            txtResult.Text = ShowCalculation(calculator, calculatorUI);
+            //txtResult.Text = text;
+            //txtResult.Text = ShowCalculation(calculator, calculatorUI);
         }
 
         private string ShowCalculation(CalculatorModel calculator, CalculatorModel calculatorUI)
         {
-            return $"{calculatorUI.Calculation}{Environment.NewLine} {calculator.Value}";
+            var UI = string.IsNullOrEmpty(calculatorUI.Calculation) ? "0" : calculatorUI.Calculation;
+            return $"{UI}{Environment.NewLine} {calculator.Calculation}";
         }
 
         private void btnResult_Click(object sender, EventArgs e)
         {
-            // 1. Calculation
             CalculationResults(calculator, calculatorUI);
-
-            // 2. Set UI
-            calculatorUI.Value = 0;
-            calculatorUI.Calculation = "";
-            calculatorUI.Op = Operator.None;
-
-            // 3. Show
             txtResult.Text = ShowCalculation(calculator, calculatorUI);
         }
 
@@ -109,19 +95,10 @@ namespace Calculator
                     service.Add(calculator, calculatorUI);
                     break;
                 case Operator.Subtract:
-                    service.Subtract(calculator, calculatorUI);
-                    break;
-                case Operator.Multiply:
-                    service.Multiply(calculator, calculatorUI);
-                    break;
-                case Operator.Division:
-                    service.Division(calculator, calculatorUI);
-                    break;
-                case Operator.None:
-                    service.SetValue(calculator, calculatorUI);
+                    service.Add(calculator, calculatorUI);
                     break;
             }
-
+            calculatorUI.Calculation = "";
         }
 
         private void btnZero_Click(object sender, EventArgs e)
@@ -178,16 +155,12 @@ namespace Calculator
         {
             calculatorUI.Value = calculatorUI.Value * 10 + number;
             calculatorUI.Calculation += number.ToString();
-
             txtResult.Text = ShowCalculation(calculator, calculatorUI);
         }
 
         private void btnClear_Click(object sender, EventArgs e)
         {
-            calculator.Value = 0;
-            calculatorUI.Calculation = string.Empty;
-
-            txtResult.Text = ShowCalculation(calculator, calculatorUI);
+           
         }
     }
 }
