@@ -51,5 +51,10 @@ namespace TinyCRM
                 }
             }
         }
+
+        private static void EditExistingCustomer(UserInterface ui, CustomerStorage storage)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

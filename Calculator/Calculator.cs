@@ -14,153 +14,169 @@ namespace Calculator
     public partial class Calculator : Form
     {
         private CalculatorModel calculatorUI;
-        private CalculatorModel calculator;
         private CalculatorService service;
         public Calculator()
         {
             InitializeComponent();
 
             calculatorUI = new CalculatorModel();
-            calculator = new CalculatorModel();
-
             service = new CalculatorService();
         }
 
         private void Calculator_Load(object sender, EventArgs e)
         {
-            txtResult.Text = ShowCalculation(calculator, calculatorUI);
+            txtResult.Text = ShowCalculation(calculatorUI);
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            BtnOperatorClick(Operator.Add, calculator, calculatorUI);
+            BtnOperatorClick(Operator.Add, calculatorUI);
         }
 
         private void btnSubtract_Click(object sender, EventArgs e)
         {
-            BtnOperatorClick(Operator.Subtract, calculator, calculatorUI);
+            BtnOperatorClick(Operator.Subtract, calculatorUI);
         }
 
         private void btnMultiply_Click(object sender, EventArgs e)
         {
-            BtnOperatorClick(Operator.Multiply, calculator, calculatorUI);
+            BtnOperatorClick(Operator.Multiply, calculatorUI);
         }
 
         private void btnDivision_Click(object sender, EventArgs e)
         {
-            BtnOperatorClick(Operator.Division, calculator, calculatorUI);
+            BtnOperatorClick(Operator.Division, calculatorUI);
         }
 
-        private void BtnOperatorClick(Operator op, CalculatorModel calculator, CalculatorModel calculatorUI)
+        private void BtnOperatorClick(Operator op, CalculatorModel calculatorUI)
         {
-            string text = "Ans ";
-            
-            switch (op)
+            var Op = string.Empty;
+            calculatorUI.Op = op;
+            calculatorUI.Calculation = "Ans ";
+
+            switch (calculatorUI.Op)
             {
                 case Operator.Add:
-                    calculatorUI.Calculation += calculatorUI.Value;
-                    text = calculatorUI.Calculation + " + " + calculatorUI.Calculation;
+                    Op = "+";
                     break;
                 case Operator.Subtract:
-                    calculatorUI.Calculation += calculatorUI.Value; // + calculatorUI.Calculation;
+                    Op = "-";
                     break;
                 case Operator.Multiply:
-                    calculatorUI.Calculation += " * ";
+                    Op = "*";
                     break;
                 case Operator.Division:
-                    calculatorUI.Calculation += " / ";
+                    Op = "/";
+                    break;
+                case Operator.None:
                     break;
             }
-            //txtResult.Text = text;
-            //txtResult.Text = ShowCalculation(calculator, calculatorUI);
+
+            calculatorUI.Calculation += " " + Op + " ";
+            txtResult.Text = ShowCalculation(calculatorUI);
+            calculatorUI.Value = 0;
+
         }
 
-        private string ShowCalculation(CalculatorModel calculator, CalculatorModel calculatorUI)
+        private string ShowCalculation(CalculatorModel calculatorUI)
         {
-            var UI = string.IsNullOrEmpty(calculatorUI.Calculation) ? "0" : calculatorUI.Calculation;
-            return $"{UI}{Environment.NewLine} {calculator.Calculation}";
+            return $"{calculatorUI.Calculation}{Environment.NewLine} {calculatorUI.Result}";
         }
 
         private void btnResult_Click(object sender, EventArgs e)
         {
-            CalculationResults(calculator, calculatorUI);
-            txtResult.Text = ShowCalculation(calculator, calculatorUI);
+            CalculationResults(calculatorUI);
+            calculatorUI.Calculation = "";
+            calculatorUI.Value = 0;
+            txtResult.Text = ShowCalculation(calculatorUI);
         }
 
-        private void CalculationResults(CalculatorModel calculator, CalculatorModel calculatorUI)
+        private void CalculationResults(CalculatorModel calculatorUI)
         {
             switch (calculatorUI.Op)
             {
                 case Operator.Add:
-                    service.Add(calculator, calculatorUI);
+                    service.Add(calculatorUI);
                     break;
                 case Operator.Subtract:
-                    service.Add(calculator, calculatorUI);
+                    service.Subtract(calculatorUI);
+                    break;
+                case Operator.Multiply:
+                    service.Multiply(calculatorUI);
+                    break;
+                case Operator.Division:
+                    service.Division(calculatorUI);
+                    break;
+                case Operator.None:
+                    service.SetValue(calculatorUI);
                     break;
             }
-            calculatorUI.Calculation = "";
+
         }
 
         private void btnZero_Click(object sender, EventArgs e)
         {
-            BtnNumberClick(0, calculator, calculatorUI);
+            BtnNumberClick(0, calculatorUI);
         }
 
         private void btnOne_Click(object sender, EventArgs e)
         {
-            BtnNumberClick(1, calculator, calculatorUI);
+            BtnNumberClick(1, calculatorUI);
         }
 
         private void btnTwo_Click(object sender, EventArgs e)
         {
-            BtnNumberClick(2, calculator, calculatorUI);
+            BtnNumberClick(2, calculatorUI);
         }
 
         private void btnThree_Click(object sender, EventArgs e)
         {
-            BtnNumberClick(3, calculator, calculatorUI);
+            BtnNumberClick(3, calculatorUI);
         }
 
         private void btnFour_Click(object sender, EventArgs e)
         {
-            BtnNumberClick(4, calculator, calculatorUI);
+            BtnNumberClick(4, calculatorUI);
         }
 
         private void btnFive_Click(object sender, EventArgs e)
         {
-            BtnNumberClick(5, calculator, calculatorUI);
+            BtnNumberClick(5, calculatorUI);
         }
 
         private void btnSix_Click(object sender, EventArgs e)
         {
-            BtnNumberClick(6, calculator, calculatorUI);
+            BtnNumberClick(6, calculatorUI);
         }
 
         private void btnSeven_Click(object sender, EventArgs e)
         {
-            BtnNumberClick(7, calculator, calculatorUI);
+            BtnNumberClick(7, calculatorUI);
         }
 
         private void btnEight_Click(object sender, EventArgs e)
         {
-            BtnNumberClick(8, calculator, calculatorUI);
+            BtnNumberClick(8, calculatorUI);
         }
 
         private void btnNine_Click(object sender, EventArgs e)
         {
-            BtnNumberClick(9, calculator, calculatorUI);
+            BtnNumberClick(9, calculatorUI);
         }
 
-        private void BtnNumberClick(int number, CalculatorModel calculator, CalculatorModel calculatorUI)
+        private void BtnNumberClick(int number, CalculatorModel calculatorUI)
         {
             calculatorUI.Value = calculatorUI.Value * 10 + number;
             calculatorUI.Calculation += number.ToString();
-            txtResult.Text = ShowCalculation(calculator, calculatorUI);
+
+            txtResult.Text = ShowCalculation(calculatorUI);
         }
 
         private void btnClear_Click(object sender, EventArgs e)
         {
-           
+            calculatorUI.Calculation = string.Empty;
+            calculatorUI.Result = 0;
+            txtResult.Text = ShowCalculation(calculatorUI);
         }
     }
 }

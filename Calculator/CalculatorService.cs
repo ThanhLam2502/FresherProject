@@ -7,31 +7,31 @@ namespace Calculator
 
     class CalculatorService
     {
-        internal void Add(CalculatorModel calculator, CalculatorModel calculatorUI)
+        internal void Add(CalculatorModel calculator)
         {
-            calculator.Value += calculatorUI.Value;
+            calculator.Result += calculator.Value;
         }
 
-        internal void Subtract(CalculatorModel calculator, CalculatorModel calculatorUI)
+        internal void Subtract(CalculatorModel calculator)
         {
-            calculator.Value -= calculatorUI.Value;
+            calculator.Result -= calculator.Value;
         }
 
-        internal void Multiply(CalculatorModel calculator, CalculatorModel calculatorUI)
+        internal void Multiply(CalculatorModel calculator)
         {
-            calculator.Value *= calculatorUI.Value;
+            calculator.Result *= calculator.Value;
         }
 
-        internal void Division(CalculatorModel calculator, CalculatorModel calculatorUI)
+        internal void Division(CalculatorModel calculator)
         {
-            if (calculatorUI.Value == 0)
+            if (calculator.Value == 0)
                 throw new DivideByZeroException();
-            calculator.Value /= calculatorUI.Value;
+            calculator.Result /= calculator.Value;
         }
 
-        internal void SetValue(CalculatorModel calculator, CalculatorModel calculatorUI)
+        internal void SetValue(CalculatorModel calculator)
         {
-            calculator.Value = calculatorUI.Value;
+            calculator.Result = calculator.Value;
         }
        
     }
