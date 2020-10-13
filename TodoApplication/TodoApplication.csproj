@@ -64,6 +64,7 @@
     <Compile Include="Service.cs" />
     <Compile Include="Status.cs" />
     <Compile Include="TaskTodo.cs" />
+    <Compile Include="Validate.cs" />
     <EmbeddedResource Include="FormAdd.resx">
       <DependentUpon>FormAdd.cs</DependentUpon>
     </EmbeddedResource>

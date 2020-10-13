@@ -13,11 +13,17 @@ namespace TodoApplication
     public partial class FormAdd : Form
     {
         private FormMain _formMain;
+        private Validate _validate;
 
         public FormAdd(FormMain formMain)
         {
             InitializeComponent();
+
             _formMain = formMain;
+            _validate = new Validate();
+
+            dateCreate.Value = DateTime.Now;
+            dateFinish.Value = DateTime.Now;
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -28,8 +34,15 @@ namespace TodoApplication
         private void btnOk_Click(object sender, EventArgs e)
         {
             TaskTodo task = GetTaskFromUI();
-            _formMain.AddTask(task);
-            Close();
+            if (_validate.IsValidTask(task))
+            {
+                _formMain.AddTask(task);
+                Close();
+            }
+            else
+            {
+                MessageBox.Show("DATA IS INVALID", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
         }
 

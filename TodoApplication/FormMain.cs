@@ -13,19 +13,13 @@ namespace TodoApplication
     public partial class FormMain : Form
     {
         private Service _service;
-        //private List<TaskTodo> _listTaskBackLog;
-        //private List<TaskTodo> _listTaskResolved;
-        //private List<TaskTodo> _listTaskClosed;
 
         public FormMain()
         {
             InitializeComponent();
             _service = new Service();
-            DisplayTasks();
-            //_listTaskBackLog = _service.GetTaskByStatus(Status.BackLog);
-            //_listTaskResolved = _service.GetTaskByStatus(Status.Resolved);
-            //_listTaskClosed = _service.GetTaskByStatus(Status.Closed);
 
+            DisplayTasks();
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -52,49 +46,35 @@ namespace TodoApplication
         }
         internal void DisplayTasks()
         {
-            DisplayTaskByStatus(Status.BackLog, lsBackLog);
+            DisplayTaskByStatus(Status.BackLog, listBackLog);
             DisplayTaskByStatus(Status.Resolved, lsResolved);
             DisplayTaskByStatus(Status.Closed, lsClosed);
         }
-
-        private void lsBackLog_DragDrop(object sender, DragEventArgs e)
+        private void listBox_MouseDown(object sender, MouseEventArgs e)
         {
             var listBox = (ListBox)sender;
+
+            int index = listBox.IndexFromPoint(e.X, e.Y);
+            if (index == -1)
+                return;
+
+            var task = (TaskTodo)listBox.Items[listBox.SelectedIndex];
+            listBox.DoDragDrop(task, DragDropEffects.All);
+        }
+
+        private void listBox_DragDrop(object sender, DragEventArgs e)
+        {
+            var listBox = (ListBox)sender;
+
             if (e.Data.GetDataPresent(typeof(TaskTodo)))
             {
                 var task = (TaskTodo)e.Data.GetData(typeof(TaskTodo));
-                MessageBox.Show(task.Title);
+                _service.SetStatusByLsName(task, listBox.Name);
+                
                 DisplayTasks();
             }
         }
-
-        private void lsBackLog_MouseMove(object sender, MouseEventArgs e)
-        {
-            var listBox = (ListBox)sender;
-        }
-
-        private void lsBackLog_DragEnter(object sender, DragEventArgs e)
-        {
-            e.Effect = DragDropEffects.All;
-        }
-
-        private void lsBackLog_DragLeave(object sender, EventArgs e)
-        {
-            var listBox = (ListBox)sender;
-        }
-
-        private void lsResolved_DragDrop(object sender, DragEventArgs e)
-        {
-            var listBox = (ListBox)sender;
-            if (e.Data.GetDataPresent(typeof(TaskTodo)))
-            {
-                var task = (TaskTodo)e.Data.GetData(typeof(TaskTodo));
-                MessageBox.Show(task.Title);
-                DisplayTasks();
-            }
-        }
-
-        private void lsResolved_DragEnter(object sender, DragEventArgs e)
+        private void listBox_DragEnter(object sender, DragEventArgs e)
         {
             e.Effect = DragDropEffects.All;
         }

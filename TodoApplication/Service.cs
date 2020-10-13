@@ -21,5 +21,16 @@ namespace TodoApplication
             return _repository.GetTaskByStatus(status);
         }
 
+        internal void SetStatusByLsName(TaskTodo task, string name)
+        {
+            if (name.Equals("listBackLog"))
+                _repository.SetStatus(task, Status.BackLog);
+
+            if (name.Equals("lsResolved"))
+                _repository.SetStatus(task, Status.Resolved);
+
+            if (name.Equals("lsClosed"))
+                _repository.SetStatus(task, Status.Closed);
+        }
     }
 }

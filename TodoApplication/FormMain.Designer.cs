@@ -33,7 +33,7 @@
             this.Label3 = new System.Windows.Forms.Label();
             this.btnAdd = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
-            this.lsBackLog = new System.Windows.Forms.ListBox();
+            this.listBackLog = new System.Windows.Forms.ListBox();
             this.lsResolved = new System.Windows.Forms.ListBox();
             this.lsClosed = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
@@ -88,35 +88,41 @@
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
-            // lsBackLog
+            // listBackLog
             // 
-            this.lsBackLog.FormattingEnabled = true;
-            this.lsBackLog.Location = new System.Drawing.Point(62, 75);
-            this.lsBackLog.Name = "lsBackLog";
-            this.lsBackLog.Size = new System.Drawing.Size(192, 329);
-            this.lsBackLog.TabIndex = 9;
-            this.lsBackLog.DragDrop += new System.Windows.Forms.DragEventHandler(this.lsBackLog_DragDrop);
-            this.lsBackLog.DragEnter += new System.Windows.Forms.DragEventHandler(this.lsBackLog_DragEnter);
-            this.lsBackLog.DragLeave += new System.EventHandler(this.lsBackLog_DragLeave);
-            this.lsBackLog.MouseMove += new System.Windows.Forms.MouseEventHandler(this.lsBackLog_MouseMove);
+            this.listBackLog.AllowDrop = true;
+            this.listBackLog.FormattingEnabled = true;
+            this.listBackLog.Location = new System.Drawing.Point(62, 75);
+            this.listBackLog.Name = "listBackLog";
+            this.listBackLog.Size = new System.Drawing.Size(192, 329);
+            this.listBackLog.TabIndex = 9;
+            this.listBackLog.DragDrop += new System.Windows.Forms.DragEventHandler(this.listBox_DragDrop);
+            this.listBackLog.DragEnter += new System.Windows.Forms.DragEventHandler(this.listBox_DragEnter);
+            this.listBackLog.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listBox_MouseDown);
             // 
             // lsResolved
             // 
+            this.lsResolved.AllowDrop = true;
             this.lsResolved.FormattingEnabled = true;
             this.lsResolved.Location = new System.Drawing.Point(346, 75);
             this.lsResolved.Name = "lsResolved";
             this.lsResolved.Size = new System.Drawing.Size(192, 329);
             this.lsResolved.TabIndex = 10;
-            this.lsResolved.DragDrop += new System.Windows.Forms.DragEventHandler(this.lsResolved_DragDrop);
-            this.lsResolved.DragEnter += new System.Windows.Forms.DragEventHandler(this.lsResolved_DragEnter);
+            this.lsResolved.DragDrop += new System.Windows.Forms.DragEventHandler(this.listBox_DragDrop);
+            this.lsResolved.DragEnter += new System.Windows.Forms.DragEventHandler(this.listBox_DragEnter);
+            this.lsResolved.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listBox_MouseDown);
             // 
             // lsClosed
             // 
+            this.lsClosed.AllowDrop = true;
             this.lsClosed.FormattingEnabled = true;
             this.lsClosed.Location = new System.Drawing.Point(628, 75);
             this.lsClosed.Name = "lsClosed";
             this.lsClosed.Size = new System.Drawing.Size(192, 329);
             this.lsClosed.TabIndex = 11;
+            this.lsClosed.DragDrop += new System.Windows.Forms.DragEventHandler(this.listBox_DragDrop);
+            this.lsClosed.DragEnter += new System.Windows.Forms.DragEventHandler(this.listBox_DragEnter);
+            this.lsClosed.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listBox_MouseDown);
             // 
             // FormMain
             // 
@@ -125,7 +131,7 @@
             this.ClientSize = new System.Drawing.Size(882, 514);
             this.Controls.Add(this.lsClosed);
             this.Controls.Add(this.lsResolved);
-            this.Controls.Add(this.lsBackLog);
+            this.Controls.Add(this.listBackLog);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.Label3);
@@ -145,7 +151,7 @@
         private System.Windows.Forms.Label Label3;
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.Button btnClose;
-        private System.Windows.Forms.ListBox lsBackLog;
+        private System.Windows.Forms.ListBox listBackLog;
         private System.Windows.Forms.ListBox lsResolved;
         private System.Windows.Forms.ListBox lsClosed;
     }

@@ -9,7 +9,25 @@ namespace TodoApplication
         public List<TaskTodo> Tasks { get; set; }
         public Repository()
         {
-            Tasks = new List<TaskTodo>();
+            Tasks = new List<TaskTodo>() {
+                new TaskTodo{
+                    Title = "a",
+                    Description = "aa",
+                },
+                new TaskTodo{
+                    Title = "b",
+                    Description = "bb",
+                    Status = Status.Closed,
+                },
+                new TaskTodo{
+                    Title = "c",
+                    Description = "cc",
+                },
+                new TaskTodo{
+                    Title = "d",
+                    Description = "dd",
+                },
+            };
         }
 
         internal void Add(TaskTodo task)
@@ -20,6 +38,11 @@ namespace TodoApplication
         internal List<TaskTodo> GetTaskByStatus(Status status)
         {
             return Tasks.Where(_ => _.Status.Equals(status)).ToList();
+        }
+
+        internal void SetStatus(TaskTodo task, Status status)
+        {
+            task.Status = status;
         }
     }
 }
